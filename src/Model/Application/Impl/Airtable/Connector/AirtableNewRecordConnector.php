@@ -15,7 +15,6 @@ use Hanaboso\PipesPhpSdk\Application\Repository\ApplicationInstallRepository;
 use Hanaboso\PipesPhpSdk\Authorization\Exception\AuthorizationException;
 use Hanaboso\PipesPhpSdk\Connector\ConnectorAbstract;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
-use Hanaboso\PipesPhpSdk\Connector\Traits\ProcessEventNotSupportedTrait;
 use Hanaboso\Utils\Exception\PipesFrameworkException;
 
 /**
@@ -25,8 +24,6 @@ use Hanaboso\Utils\Exception\PipesFrameworkException;
  */
 final class AirtableNewRecordConnector extends ConnectorAbstract
 {
-
-    use ProcessEventNotSupportedTrait;
 
     /**
      * @var ApplicationInstallRepository&ObjectRepository<ApplicationInstall>
@@ -71,7 +68,7 @@ final class AirtableNewRecordConnector extends ConnectorAbstract
         if (!$app->getValue($applicationInstall, AirtableApplication::BASE_ID)
             || !$app->getValue($applicationInstall, AirtableApplication::TABLE_NAME)) {
 
-            $dto->setStopProcess(ProcessDto::STOP_AND_FAILED);
+            $dto->setStopProcess(ProcessDto::STOP_AND_FAILED, 'Airtable application install not found');
 
             return $dto;
         }

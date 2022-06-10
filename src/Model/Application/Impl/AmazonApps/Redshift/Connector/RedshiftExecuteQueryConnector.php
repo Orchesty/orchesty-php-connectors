@@ -7,6 +7,7 @@ use Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps\Redshift\RedshiftA
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use JsonException;
+use PgSql\Result;
 use Throwable;
 
 /**
@@ -36,9 +37,13 @@ final class RedshiftExecuteQueryConnector extends RedshiftObjectConnectorAbstrac
         $connection  = $application->getConnection($applicationInstall);
 
         try {
-            /** @var Resource $result */
-            $result = pg_query($connection, $content[self::QUERY]);
-        } catch (Throwable) {
+            /** @var resource $c */
+            $c = $connection;
+            /** @var Result $result */
+            $result = pg_query($c, $content[self::QUERY]);
+        } catch (Throwable $e){
+            $e;
+
             throw $this->createException(pg_last_error($connection));
         }
 
