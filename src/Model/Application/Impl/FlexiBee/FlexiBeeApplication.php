@@ -73,7 +73,7 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
     /**
      * @return string
      */
-    public function getKey(): string
+    public function getName(): string
     {
         return self::KEY;
     }
@@ -81,7 +81,7 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
     /**
      * @return string
      */
-    public function getName(): string
+    public function getPublicName(): string
     {
         return 'FlexiBee Application';
     }
@@ -278,7 +278,9 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
 
             try {
                 $token = $res->getJsonBody();
-            } catch (Throwable) {
+            } catch (Throwable $e) {
+                $e;
+
                 throw new Exception(self::CANNOT_GET_BODY);
             }
 

@@ -9,6 +9,7 @@ use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use PgSql\Connection;
 
 /**
  * Class RedshiftApplication
@@ -31,7 +32,7 @@ final class RedshiftApplication extends AwsApplicationAbstract
     /**
      * @return string
      */
-    public function getKey(): string
+    public function getName(): string
     {
         return 'redshift';
     }
@@ -39,7 +40,7 @@ final class RedshiftApplication extends AwsApplicationAbstract
     /**
      * @return string
      */
-    public function getName(): string
+    public function getPublicName(): string
     {
         return 'Amazon Redshift';
     }
@@ -139,10 +140,10 @@ final class RedshiftApplication extends AwsApplicationAbstract
     /**
      * @param ApplicationInstall $applicationInstall
      *
-     * @return resource
+     * @return Connection
      * @throws ApplicationInstallException
      */
-    public function getConnection(ApplicationInstall $applicationInstall)
+    public function getConnection(ApplicationInstall $applicationInstall): Connection
     {
         $settings = $applicationInstall->getSettings();
         $host     = $settings[RedshiftApplication::HOST];

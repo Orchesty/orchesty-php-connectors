@@ -63,30 +63,10 @@ final class HubSpotCreateContactConnector extends ConnectorAbstract implements L
 
     /**
      * @param LoggerInterface $logger
-     *
-     * @return self
      */
-    public function setLogger(LoggerInterface $logger): self
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
-
-        return $this;
-    }
-
-    /**
-     * @param ProcessDto $dto
-     *
-     * @return ProcessDto
-     * @throws ConnectorException
-     */
-    public function processEvent(ProcessDto $dto): ProcessDto
-    {
-        $dto;
-
-        throw new ConnectorException(
-            'ProcessEvent is not implemented',
-            ConnectorException::CONNECTOR_DOES_NOT_HAVE_PROCESS_EVENT,
-        );
     }
 
     /**
