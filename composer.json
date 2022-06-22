@@ -1,6 +1,6 @@
 {
-    "name": "hanaboso/pipes-connectors",
-    "description": "Connectors for PipesFramework",
+    "name": "orchesty/php-connectors",
+    "description": "Connectors for Orchesty",
     "license": "Apache-2.0",
     "version": "2.0.0",
     "require": {
@@ -8,9 +8,9 @@
         "ext-ctype": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
-        "hanaboso/app-store": "^2.0",
-        "hanaboso/pipes-php-sdk": "^2.0",
-        "hanaboso/rabbit-mq-bundle": "^1.5"
+        "hanaboso/rabbit-mq-bundle": "^1.5",
+        "orchesty/app-store": "^2.0",
+        "orchesty/php-sdk": "^2.0"
     },
     "require-dev": {
         "aws/aws-sdk-php-symfony": "^2.2",
