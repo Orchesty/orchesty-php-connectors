@@ -4,7 +4,6 @@ namespace HbPFConnectorsTests\Live\Model\Application\Impl\Fakturoid\Connector;
 
 use Exception;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\FakturoidApplication;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
@@ -30,11 +29,9 @@ final class FakturoidGetAccountDetailConnectorTest extends ControllerTestCaseAbs
         $applicationInstall = new ApplicationInstall();
         $applicationInstall->setSettings(
             [
-                ApplicationInterface::AUTHORIZATION_SETTINGS => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
                     BasicApplicationInterface::USER     => 'hanabo****nator.com',
                     BasicApplicationInterface::PASSWORD => '******1bbef40dcd864859b625ec4c478184',
-                ],
-                ApplicationAbstract::FORM                    => [
                     FakturoidApplication::ACCOUNT => 'fakturacnitest',
                 ],
             ],

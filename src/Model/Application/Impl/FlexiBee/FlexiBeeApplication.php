@@ -15,6 +15,7 @@ use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
 use Hanaboso\Utils\Date\DateTimeUtils;
@@ -114,7 +115,7 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
     ): RequestDto
     {
         $request = new RequestDto($method, $this->getUri($url));
-        if ($applicationInstall->getSettings()[self::FORM][self::AUTH] == self::AUTH_JSON) {
+        if ($applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::AUTH] == self::AUTH_JSON) {
             $request->setHeaders(
                 [
                     'Content-Type'    => 'application/json',
@@ -122,7 +123,7 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
                     'X-authSessionId' => $this->getApiToken($applicationInstall),
                 ],
             );
-        } else if ($applicationInstall->getSettings()[self::FORM][self::AUTH] == self::AUTH_HTTP) {
+        } else if ($applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::AUTH] == self::AUTH_HTTP) {
             $request->setHeaders(
                 [
                     'Content-Type'  => 'application/json',
@@ -131,9 +132,9 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
                         sprintf(
                             ' Basic %s:%s',
                             $applicationInstall->getSettings(
-                            )[self::AUTHORIZATION_SETTINGS][BasicApplicationInterface::USER],
+                            )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationInterface::USER],
                             $applicationInstall->getSettings(
-                            )[self::AUTHORIZATION_SETTINGS][BasicApplicationInterface::PASSWORD],
+                            )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationInterface::PASSWORD],
                         ),
                     ),
                 ],
@@ -156,7 +157,7 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
      */
     public function getUrl(ApplicationInstall $applicationInstall, ?string $url): Uri
     {
-        $host = $applicationInstall->getSettings()[self::FORM][self::FLEXIBEE_URL] ?? '';
+        $host = $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::FLEXIBEE_URL] ?? '';
 
         if (empty($host)) {
             throw new ApplicationInstallException(
@@ -169,21 +170,24 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
     }
 
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
         $authTypeField = new Field(Field::SELECT_BOX, self::AUTH, 'Authorize type', NULL, TRUE);
         $authTypeField->setChoices([self::AUTH_HTTP, self::AUTH_JSON]);
 
-        $form = new Form();
+        $form = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
         $form
             ->addField(new Field(Field::TEXT, BasicApplicationInterface::USER, 'User', NULL, TRUE))
             ->addField(new Field(Field::PASSWORD, BasicApplicationInterface::PASSWORD, 'Password', NULL, TRUE))
             ->addField(new Field(Field::URL, self::FLEXIBEE_URL, 'Flexibee URL', NULL, TRUE))
             ->addField($authTypeField);
 
-        return $form;
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
     /**
@@ -195,8 +199,8 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
     {
         $settings = $applicationInstall->getSettings();
 
-        return isset($settings[ApplicationInterface::AUTHORIZATION_SETTINGS][self::USER])
-            && isset($settings[ApplicationInterface::AUTHORIZATION_SETTINGS][self::PASSWORD]);
+        return isset($settings[ApplicationInterface::AUTHORIZATION_FORM][self::USER])
+            && isset($settings[ApplicationInterface::AUTHORIZATION_FORM][self::PASSWORD]);
     }
 
     /**
@@ -216,8 +220,8 @@ final class FlexiBeeApplication extends BasicApplicationAbstract
             );
         }
 
-        $user     = $settings[BasicApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationInterface::USER];
-        $password = $settings[BasicApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationInterface::PASSWORD];
+        $user     = $settings[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationInterface::USER];
+        $password = $settings[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationInterface::PASSWORD];
 
         $request = new RequestDto(
             CurlManager::METHOD_POST,

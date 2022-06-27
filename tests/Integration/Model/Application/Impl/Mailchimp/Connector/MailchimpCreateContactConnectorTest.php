@@ -5,7 +5,7 @@ namespace HbPFConnectorsTests\Integration\Model\Application\Impl\Mailchimp\Conne
 use Exception;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Mailchimp\Connector\MailchimpCreateContactConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Mailchimp\MailchimpApplication;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\Utils\File\File;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
 use HbPFConnectorsTests\DataProvider;
@@ -60,10 +60,11 @@ final class MailchimpCreateContactConnectorTest extends DatabaseTestCaseAbstract
 
         $applicationInstall->addSettings(
             [
-                ApplicationAbstract::FORM          => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
+                    ...$applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM],
                     MailchimpApplication::AUDIENCE_ID => '2a8******8',
                 ],
-                MailchimpApplication::API_KEYPOINT => $app->getApiEndpoint($applicationInstall),
+                MailchimpApplication::API_KEYPOINT       => $app->getApiEndpoint($applicationInstall),
             ],
         );
 

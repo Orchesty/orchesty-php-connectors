@@ -7,7 +7,7 @@ use Hanaboso\CommonsBundle\Process\ProcessDto;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\ShoptetApplication;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\PipesPhpSdk\Connector\Traits\ProcessExceptionTrait;
 use Hanaboso\Utils\Exception\PipesFrameworkException;
@@ -57,7 +57,7 @@ final class ShoptetUpdateOrderConnector extends ShoptetConnectorAbstract
                             sprintf(
                                 self::URL,
                                 $applicationInstall->getSettings(
-                                )[ApplicationAbstract::FORM][ShoptetApplication::ESHOP_ID],
+                                )[ApplicationInterface::AUTHORIZATION_FORM][ShoptetApplication::ESHOP_ID],
                             ),
                         ),
                     )->setDebugInfo($dto),

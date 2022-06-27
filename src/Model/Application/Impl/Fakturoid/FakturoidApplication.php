@@ -4,11 +4,11 @@ namespace Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid;
 
 use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\RequestDto;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
 use Hanaboso\Utils\String\Base64;
@@ -66,9 +66,9 @@ final class FakturoidApplication extends BasicApplicationAbstract
     ): RequestDto
     {
         $userName = $applicationInstall->getSettings(
-        )[ApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationInterface::USER];
+        )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationInterface::USER];
         $password = $applicationInstall->getSettings(
-        )[ApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationInterface::PASSWORD];
+        )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationInterface::PASSWORD];
 
         $request = new RequestDto($method, $this->getUri($url ?? self::BASE_URL));
         $request->setHeaders(
@@ -95,25 +95,28 @@ final class FakturoidApplication extends BasicApplicationAbstract
      */
     public function isAuthorized(ApplicationInstall $applicationInstall): bool
     {
-        $settings = $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_SETTINGS] ?? [];
+        $settings = $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM] ?? [];
 
-        return isset($applicationInstall->getSettings()[ApplicationAbstract::FORM][self::ACCOUNT])
+        return isset($applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::ACCOUNT])
             && isset($settings[BasicApplicationInterface::USER])
             && isset($settings[BasicApplicationInterface::PASSWORD]);
     }
 
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
-        $form = new Form();
+        $form = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
         $form
             ->addField(new Field(Field::TEXT, self::ACCOUNT, 'Account', NULL, TRUE))
             ->addField(new Field(Field::TEXT, BasicApplicationAbstract::USER, 'Username', NULL, TRUE))
             ->addField(new Field(Field::PASSWORD, BasicApplicationAbstract::PASSWORD, 'API key', TRUE));
 
-        return $form;
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
 }

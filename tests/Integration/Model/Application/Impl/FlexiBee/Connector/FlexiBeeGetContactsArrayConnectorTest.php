@@ -9,7 +9,7 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\Connector\FlexiBeeGetContactsArrayConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\FlexiBeeApplication;
-use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
 use HbPFConnectorsTests\DataProvider;
@@ -91,17 +91,13 @@ final class FlexiBeeGetContactsArrayConnectorTest extends DatabaseTestCaseAbstra
 
         $appInstall->addSettings(
             [
-                FlexiBeeApplication::AUTHORIZATION_SETTINGS =>
+                ApplicationInterface::AUTHORIZATION_FORM =>
                     [
                         'user'     => 'user123',
                         'password' => 'pass123',
-                    ],
-                BasicApplicationAbstract::FORM              =>
-                    [
                         'auth'        => 'http',
                         'flexibeeUrl' => 'https://demo.flexibee.eu/c/demo',
                     ],
-
             ],
         );
 

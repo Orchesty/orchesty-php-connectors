@@ -9,10 +9,11 @@ use Hanaboso\CommonsBundle\Transport\Curl\Dto\RequestDto;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookApplicationInterface;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookSubscription;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 use Hanaboso\Utils\String\Json;
 use JsonException;
@@ -85,7 +86,7 @@ final class WisepopsApplication extends BasicApplicationAbstract implements Webh
                 'Authorization' =>
                     sprintf(
                         'WISEPOPS-API key="%s"',
-                        $applicationInstall->getSettings()[ApplicationAbstract::FORM][self::API_KEY],
+                        $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::API_KEY],
                     ),
             ],
         );
@@ -96,15 +97,19 @@ final class WisepopsApplication extends BasicApplicationAbstract implements Webh
         return $request;
     }
 
+
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
-        $form = new Form();
+        $form = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
         $form->addField(new Field(Field::TEXT, self::API_KEY, 'API Key', NULL, TRUE));
 
-        return $form;
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
     /**
@@ -191,7 +196,7 @@ final class WisepopsApplication extends BasicApplicationAbstract implements Webh
      */
     public function isAuthorized(ApplicationInstall $applicationInstall): bool
     {
-        return isset($applicationInstall->getSettings()[ApplicationAbstract::FORM][self::API_KEY]);
+        return isset($applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::API_KEY]);
     }
 
 }

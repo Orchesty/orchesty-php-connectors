@@ -8,7 +8,7 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Zendesk\ZendeskApplication;
 use Hanaboso\PhpCheckUtils\PhpUnit\Traits\PrivateTrait;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationAbstract;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
@@ -79,23 +79,25 @@ final class ZendeskApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Zendesk\ZendeskApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Zendesk\ZendeskApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
         $this->setApplication();
-        $fields = $this->application->getSettingsForm()->getFields();
-        foreach ($fields as $field) {
-            self::assertContainsEquals(
-                $field->getKey(),
-                [
-                    OAuth2ApplicationAbstract::CLIENT_ID,
-                    OAuth2ApplicationAbstract::CLIENT_SECRET,
-                    'subdomain',
-                ],
-            );
+        $forms = $this->application->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            foreach ($form->getFields() as $field) {
+                self::assertContainsEquals(
+                    $field->getKey(),
+                    [
+                        OAuth2ApplicationAbstract::CLIENT_ID,
+                        OAuth2ApplicationAbstract::CLIENT_SECRET,
+                        'subdomain',
+                    ],
+                );
+            }
         }
     }
 
@@ -138,7 +140,7 @@ final class ZendeskApplicationTest extends DatabaseTestCaseAbstract
     {
         $this->setApplication();
         $applicationInstall = DataProvider::getOauth2AppInstall($this->application->getName())
-            ->setSettings([ApplicationAbstract::FORM => ['subdomain' => 'domain123']]);
+            ->setSettings([ApplicationInterface::AUTHORIZATION_FORM => ['subdomain' => 'domain123']]);
 
         $authUrl = $this->application->getAuthUrlWithSubdomain($applicationInstall);
 
@@ -154,7 +156,7 @@ final class ZendeskApplicationTest extends DatabaseTestCaseAbstract
     {
         $this->setApplication();
         $applicationInstall = DataProvider::getOauth2AppInstall($this->application->getName())
-            ->addSettings([ApplicationAbstract::FORM => ['subdomain' => 'domain123']]);
+            ->addSettings([ApplicationInterface::AUTHORIZATION_FORM => ['subdomain' => 'domain123']]);
 
         $authUrl = $this->application->getTokenUrlWithSubdomain($applicationInstall);
 
@@ -170,8 +172,15 @@ final class ZendeskApplicationTest extends DatabaseTestCaseAbstract
     public function testAuthorize(): void
     {
         $this->setApplication();
-        $applicationInstall = DataProvider::getOauth2AppInstall($this->application->getName())
-            ->addSettings([ApplicationAbstract::FORM => ['subdomain' => 'domain123']]);
+        $applicationInstall = DataProvider::getOauth2AppInstall($this->application->getName());
+        $applicationInstall->addSettings(
+            [
+                ApplicationInterface::AUTHORIZATION_FORM => [
+                    ...$applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM],
+                    'subdomain' => 'domain123',
+                ],
+            ],
+        );
 
         $this->application->authorize($applicationInstall);
         self::assertTrue($this->application->isAuthorized($applicationInstall));
@@ -204,7 +213,7 @@ final class ZendeskApplicationTest extends DatabaseTestCaseAbstract
     {
         $this->setApplication();
         $applicationInstall = DataProvider::getOauth2AppInstall($this->application->getName())
-            ->addSettings([ApplicationAbstract::FORM => ['subdomain' => 'domain123']]);
+            ->addSettings([ApplicationInterface::AUTHORIZATION_FORM => ['subdomain' => 'domain123']]);
 
         $crateDto = $this->invokeMethod(
             $this->application,

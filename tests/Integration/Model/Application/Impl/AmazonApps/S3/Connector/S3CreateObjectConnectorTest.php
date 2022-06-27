@@ -11,6 +11,7 @@ use Hanaboso\CommonsBundle\Process\ProcessDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps\S3\Connector\S3CreateObjectConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps\S3\S3Application;
 use Hanaboso\PhpCheckUtils\PhpUnit\Traits\PrivateTrait;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\Utils\String\Json;
@@ -140,7 +141,7 @@ final class S3CreateObjectConnectorTest extends DatabaseTestCaseAbstract
             ->setUser(self::USER)
             ->setSettings(
                 [
-                    S3Application::FORM => [
+                    ApplicationInterface::AUTHORIZATION_FORM => [
                         S3Application::KEY      => 'Key',
                         S3Application::SECRET   => 'Secret',
                         S3Application::REGION   => 'eu-central-1',

@@ -12,11 +12,12 @@ use Hanaboso\CommonsBundle\Transport\Curl\Dto\RequestDto;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookApplicationInterface;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookSubscription;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Authorization\Provider\Dto\OAuth2Dto;
@@ -131,18 +132,22 @@ final class ShoptetApplication extends OAuth2ApplicationAbstract implements Webh
     }
 
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
-        $form = new Form();
-
-        return $form
+        $form = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
+        $form
             ->addField(new Field(Field::TEXT, OAuth2ApplicationInterface::CLIENT_ID, 'Client Id', NULL, TRUE))
             ->addField(new Field(Field::TEXT, OAuth2ApplicationInterface::CLIENT_SECRET, 'Client Secret', NULL, TRUE))
             ->addField(new Field(Field::TEXT, self::ESHOP_ID, 'Eshop Id', NULL, TRUE))
             ->addField(new Field(Field::TEXT, self::OAUTH_URL, 'Authorization url', NULL, TRUE))
             ->addField(new Field(Field::TEXT, self::API_TOKEN_URL, 'Api token url', NULL, TRUE));
+
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
     /**
@@ -168,7 +173,7 @@ final class ShoptetApplication extends OAuth2ApplicationAbstract implements Webh
      */
     public function getAuthUrlWithServerUrl(ApplicationInstall $applicationInstall): string
     {
-        return $applicationInstall->getSettings()[ApplicationAbstract::FORM][self::OAUTH_URL];
+        return $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::OAUTH_URL];
     }
 
     /**
@@ -178,7 +183,7 @@ final class ShoptetApplication extends OAuth2ApplicationAbstract implements Webh
      */
     public function getTokenUrlWithServerUrl(ApplicationInstall $applicationInstall): string
     {
-        return $applicationInstall->getSettings()[ApplicationAbstract::FORM][self::API_TOKEN_URL];
+        return $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::API_TOKEN_URL];
     }
 
     /**

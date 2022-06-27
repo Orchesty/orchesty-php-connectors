@@ -96,11 +96,13 @@ final class ShipstationApplicationTest extends DatabaseTestCaseAbstract
     /**
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $fields = $this->application->getSettingsForm()->getFields();
-        foreach ($fields as $field) {
-            self::assertContains($field->getKey(), ['user', 'password']);
+        $forms = $this->application->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            foreach ($form->getFields() as $field) {
+                self::assertContains($field->getKey(), ['user', 'password']);
+            }
         }
     }
 

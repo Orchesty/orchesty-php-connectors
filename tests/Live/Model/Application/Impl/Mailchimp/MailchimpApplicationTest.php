@@ -5,7 +5,6 @@ namespace HbPFConnectorsTests\Live\Model\Application\Impl\Mailchimp;
 use Exception;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Mailchimp\MailchimpApplication;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
-use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
 use HbPFConnectorsTests\DataProvider;
 
@@ -33,7 +32,7 @@ final class MailchimpApplicationTest extends DatabaseTestCaseAbstract
         );
         $applicationInstall = $applicationInstall->setSettings(
             [
-                BasicApplicationInterface::AUTHORIZATION_SETTINGS =>
+                ApplicationInterface::AUTHORIZATION_FORM =>
                     [
                         ApplicationInterface::REDIRECT_URL => 'xxxx',
                     ],

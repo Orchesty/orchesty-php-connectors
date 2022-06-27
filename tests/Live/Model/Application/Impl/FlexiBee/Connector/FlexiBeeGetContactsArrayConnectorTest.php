@@ -6,8 +6,8 @@ use Exception;
 use GuzzleHttp\Psr7\Uri;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\RequestDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\FlexiBeeApplication;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
-use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
 use HbPFConnectorsTests\DataProvider;
 
@@ -50,13 +50,10 @@ final class FlexiBeeGetContactsArrayConnectorTest extends DatabaseTestCaseAbstra
 
         $appInstall->setSettings(
             [
-                FlexiBeeApplication::AUTHORIZATION_SETTINGS =>
+                ApplicationInterface::AUTHORIZATION_FORM =>
                     [
                         'user'     => 'winstrom',
                         'password' => 'winstrom',
-                    ],
-                BasicApplicationAbstract::FORM              =>
-                    [
                         'auth'        => 'http',
                         'flexibeeUrl' => 'https://demo.flexibee.eu/c/demo',
                     ],

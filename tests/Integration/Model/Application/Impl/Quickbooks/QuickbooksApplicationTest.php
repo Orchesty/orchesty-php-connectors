@@ -6,8 +6,8 @@ use Exception;
 use Hanaboso\CommonsBundle\Enum\ApplicationTypeEnum;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Quickbooks\QuickbooksApplication;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
-use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationInterface;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
 use HbPFConnectorsTests\DataProvider;
@@ -81,22 +81,24 @@ final class QuickbooksApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Quickbooks\QuickbooksApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Quickbooks\QuickbooksApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $fields = $this->application->getSettingsForm()->getFields();
-        foreach ($fields as $field) {
-            self::assertContains(
-                $field->getKey(),
-                [
-                    'app_id',
-                    OAuth2ApplicationInterface::CLIENT_ID,
-                    OAuth2ApplicationInterface::CLIENT_SECRET,
-                ],
-            );
+        $forms = $this->application->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            foreach ($form->getFields() as $field) {
+                self::assertContains(
+                    $field->getKey(),
+                    [
+                        'app_id',
+                        OAuth2ApplicationInterface::CLIENT_ID,
+                        OAuth2ApplicationInterface::CLIENT_SECRET,
+                    ],
+                );
+            }
         }
     }
 
@@ -116,7 +118,12 @@ final class QuickbooksApplicationTest extends DatabaseTestCaseAbstract
             self::CLIENT_SECRET,
         );
         $applicationInstall->addSettings(
-            [BasicApplicationAbstract::FORM => [QuickbooksApplication::APP_ID => self::SHOP_ID]],
+            [
+                ApplicationInterface::AUTHORIZATION_FORM => [
+                    ...$applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM],
+                    QuickbooksApplication::APP_ID => self::SHOP_ID,
+                ],
+            ],
         );
         $this->pfd($applicationInstall);
 

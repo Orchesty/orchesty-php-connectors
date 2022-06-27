@@ -5,8 +5,8 @@ namespace HbPFConnectorsTests\Integration\Model\Application\Impl\AmazonApps\S3;
 use Exception;
 use Hanaboso\CommonsBundle\Enum\ApplicationTypeEnum;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps\S3\S3Application;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
-use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
 use LogicException;
 
@@ -77,23 +77,25 @@ final class S3ApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps\S3\S3Application::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps\S3\S3Application::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        foreach ($this->application->getSettingsForm()->getFields() as $field) {
-            self::assertContains(
-                $field->getKey(),
-                [
-                    S3Application::KEY,
-                    S3Application::SECRET,
-                    S3Application::BUCKET,
-                    S3Application::REGION,
-                    S3Application::ENDPOINT,
-                ],
-            );
+        foreach ($this->application->getFormStack()->getForms() as $form) {
+            foreach ($form->getFields() as $field) {
+                self::assertContains(
+                    $field->getKey(),
+                    [
+                        S3Application::KEY,
+                        S3Application::SECRET,
+                        S3Application::BUCKET,
+                        S3Application::REGION,
+                        S3Application::ENDPOINT,
+                    ],
+                );
+            }
         }
     }
 
@@ -106,7 +108,7 @@ final class S3ApplicationTest extends DatabaseTestCaseAbstract
     {
         $application = (new ApplicationInstall())->setSettings(
             [
-                BasicApplicationAbstract::FORM => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
                     S3Application::KEY      => 'Key',
                     S3Application::SECRET   => 'Secret',
                     S3Application::REGION   => 'eu-central-1',

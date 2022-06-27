@@ -8,7 +8,7 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookSubscription;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Wisepop\WisepopsApplication;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
@@ -83,15 +83,17 @@ final class WisepopsApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Wisepop\WisepopsApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Wisepop\WisepopsApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $fields = $this->application->getSettingsForm()->getFields();
-        foreach ($fields as $field) {
-            self::assertContains($field->getKey(), ['api_key']);
+        $forms = $this->application->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            foreach ($form->getFields() as $field) {
+                self::assertContains($field->getKey(), ['api_key']);
+            }
         }
     }
 
@@ -192,7 +194,7 @@ final class WisepopsApplicationTest extends DatabaseTestCaseAbstract
         $applicationInstall = (new ApplicationInstall())
             ->setUser('user')
             ->setKey('wisepops')
-            ->setSettings([ApplicationAbstract::FORM => ['api_key' => '123']]);
+            ->setSettings([ApplicationInterface::AUTHORIZATION_FORM => ['api_key' => '123']]);
         $this->pfd($applicationInstall);
 
         return $applicationInstall;

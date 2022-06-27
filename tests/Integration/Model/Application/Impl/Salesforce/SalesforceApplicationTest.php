@@ -74,23 +74,25 @@ final class SalesforceApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Salesforce\SalesforceApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Salesforce\SalesforceApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
         $this->setApplication();
-        $fields = $this->application->getSettingsForm()->getFields();
-        foreach ($fields as $field) {
-            self::assertContainsEquals(
-                $field->getKey(),
-                [
-                    OAuth2ApplicationAbstract::CLIENT_ID,
-                    OAuth2ApplicationAbstract::CLIENT_SECRET,
-                    'instance_name',
-                ],
-            );
+        $forms = $this->application->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            foreach ($form->getFields() as $field) {
+                self::assertContainsEquals(
+                    $field->getKey(),
+                    [
+                        OAuth2ApplicationAbstract::CLIENT_ID,
+                        OAuth2ApplicationAbstract::CLIENT_SECRET,
+                        'instance_name',
+                    ],
+                );
+            }
         }
     }
 

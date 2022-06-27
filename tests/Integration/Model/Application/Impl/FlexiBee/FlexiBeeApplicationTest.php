@@ -9,9 +9,9 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\FlexiBeeApplication;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
-use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 use Hanaboso\Utils\Exception\DateTimeException;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
@@ -250,14 +250,16 @@ final class FlexiBeeApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\FlexiBeeApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\FlexiBeeApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $form = $this->getApp()->getSettingsForm();
-        self::assertCount(4, $form->getFields());
+        $forms = $this->getApp()->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            self::assertCount(4, $form->getFields());
+        }
     }
 
     /**
@@ -382,22 +384,22 @@ final class FlexiBeeApplicationTest extends DatabaseTestCaseAbstract
         if ($flexiBeeUrl) {
             $appInstall->addSettings(
                 [
-                    FlexiBeeApplication::AUTHORIZATION_SETTINGS => $arrayAuthSetttings,
-                    BasicApplicationAbstract::FORM =>
-                    [
-                        'auth'                                      => $auth,
-                        'flexibeeUrl'                               => 'https://demo.flexibee.eu/c/demo',
-                    ],
+                    ApplicationInterface::AUTHORIZATION_FORM =>
+                        [
+                            ...$arrayAuthSetttings,
+                            'auth'        => $auth,
+                            'flexibeeUrl' => 'https://demo.flexibee.eu/c/demo',
+                        ],
 
                 ],
             );
         } else {
             $appInstall->addSettings(
                 [
-                    FlexiBeeApplication::AUTHORIZATION_SETTINGS => $arrayAuthSetttings,
-                    BasicApplicationAbstract::FORM =>
+                    ApplicationInterface::AUTHORIZATION_FORM =>
                         [
-                            'auth'                                      => $auth,
+                            ...$arrayAuthSetttings,
+                            'auth' => $auth,
                         ],
                 ],
             );

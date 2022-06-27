@@ -9,11 +9,12 @@ use Hanaboso\CommonsBundle\Transport\Curl\Dto\RequestDto;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookApplicationInterface;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookSubscription;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
-use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
 use Hanaboso\Utils\String\Json;
 use JsonException;
 
@@ -92,17 +93,20 @@ final class ShipstationApplication extends BasicApplicationAbstract implements W
     }
 
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
-        $form        = new Form();
+        $form        = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
         $field       = new Field(Field::TEXT, BasicApplicationAbstract::USER, 'API Key', NULL, TRUE);
         $fieldSecret = new Field(Field::TEXT, BasicApplicationAbstract::PASSWORD, 'API Secret', NULL, TRUE);
         $form->addField($field);
         $form->addField($fieldSecret);
 
-        return $form;
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
     /**
@@ -202,9 +206,9 @@ final class ShipstationApplication extends BasicApplicationAbstract implements W
             sprintf(
                 '%s:%s',
                 $applicationInstall->getSettings(
-                )[BasicApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationAbstract::USER],
+                )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationAbstract::USER],
                 $applicationInstall->getSettings(
-                )[BasicApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationAbstract::PASSWORD],
+                )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationAbstract::PASSWORD],
             ),
         );
     }

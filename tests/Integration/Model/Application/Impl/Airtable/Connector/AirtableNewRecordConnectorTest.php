@@ -6,10 +6,9 @@ use Exception;
 use Hanaboso\CommonsBundle\Process\ProcessDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Airtable\AirtableApplication;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Airtable\Connector\AirtableNewRecordConnector;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
-use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
 use Hanaboso\Utils\File\File;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
 use HbPFConnectorsTests\DataProvider;
@@ -131,11 +130,8 @@ final class AirtableNewRecordConnectorTest extends DatabaseTestCaseAbstract
         $applicationInstall = new ApplicationInstall();
         $applicationInstall->setSettings(
             [
-                BasicApplicationInterface::AUTHORIZATION_SETTINGS =>
-                    [
-                        BasicApplicationAbstract::TOKEN => self::API_KEY,
-                    ],
-                ApplicationAbstract::FORM                         => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
+                    BasicApplicationAbstract::TOKEN => self::API_KEY,
                     AirtableApplication::BASE_ID    => $baseId,
                     AirtableApplication::TABLE_NAME => self::TABLE_NAME,
                 ],

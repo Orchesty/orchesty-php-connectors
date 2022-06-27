@@ -10,11 +10,12 @@ use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\CommonsBundle\Transport\CurlManagerInterface;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookApplicationInterface;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookSubscription;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Authorization\Exception\AuthorizationException;
@@ -130,16 +131,19 @@ final class MailchimpApplication extends OAuth2ApplicationAbstract implements We
     }
 
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
-        $form = new Form();
+        $form = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
         $form->addField(new Field(Field::TEXT, OAuth2ApplicationInterface::CLIENT_ID, 'Client Id', NULL, TRUE));
         $form->addField(new Field(Field::TEXT, OAuth2ApplicationInterface::CLIENT_SECRET, 'Client Secret', NULL, TRUE));
         $form->addField(new Field(Field::TEXT, self::AUDIENCE_ID, 'Audience Id', NULL, TRUE));
 
-        return $form;
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
     /**
@@ -222,7 +226,7 @@ final class MailchimpApplication extends OAuth2ApplicationAbstract implements We
             sprintf(
                 '%s/3.0/lists/%s/webhooks',
                 $applicationInstall->getSettings()[self::API_KEYPOINT],
-                $applicationInstall->getSettings()[ApplicationAbstract::FORM][self::AUDIENCE_ID],
+                $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::AUDIENCE_ID],
             ),
             Json::encode(
                 [
@@ -256,7 +260,7 @@ final class MailchimpApplication extends OAuth2ApplicationAbstract implements We
             sprintf(
                 '%s/3.0/lists/%s/webhooks/%s',
                 $applicationInstall->getSettings()[self::API_KEYPOINT],
-                $applicationInstall->getSettings()[ApplicationAbstract::FORM][self::AUDIENCE_ID],
+                $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::AUDIENCE_ID],
                 $id,
             ),
         );

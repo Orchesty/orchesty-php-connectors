@@ -111,11 +111,13 @@ final class BigcommerceApplicationTest extends DatabaseTestCaseAbstract
     /**
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $fields = $this->application->getSettingsForm()->getFields();
-        foreach ($fields as $field) {
-            self::assertContains($field->getKey(), ['client_id', 'client_secret']);
+        $forms = $this->application->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            foreach ($form->getFields() as $field) {
+                self::assertContains($field->getKey(), ['client_id', 'client_secret']);
+            }
         }
     }
 

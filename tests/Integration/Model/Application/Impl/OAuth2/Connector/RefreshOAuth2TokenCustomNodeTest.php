@@ -46,7 +46,7 @@ final class RefreshOAuth2TokenCustomNodeTest extends DatabaseTestCaseAbstract
         $applicationInstall->setExpires(DateTimeUtils::getUtcDateTime('+1 hour'));
         $applicationInstall->setSettings(
             [
-                ApplicationInterface::AUTHORIZATION_SETTINGS => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
                     ApplicationInterface::TOKEN => [
                         'code'          => 'code123',
                         'token'         => 'fa830d8d43*****bac307906e83de659',

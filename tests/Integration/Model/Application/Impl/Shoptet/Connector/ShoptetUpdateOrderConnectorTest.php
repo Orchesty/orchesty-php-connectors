@@ -9,6 +9,7 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetUpdateOrderConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\ShoptetApplication;
 use Hanaboso\PhpCheckUtils\PhpUnit\Traits\PrivateTrait;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\Utils\File\File;
 use Hanaboso\Utils\String\Json;
@@ -41,11 +42,11 @@ final class ShoptetUpdateOrderConnectorTest extends DatabaseTestCaseAbstract
     ];
 
     private const SETTINGS = [
-        'form'           => [
+        ApplicationInterface::AUTHORIZATION_FORM => [
             'cancelled'                  => -1,
             ShoptetApplication::ESHOP_ID => 125,
         ],
-        'clientSettings' => [
+        'clientSettings'                         => [
             'token' => [
                 'access_token' => 'Access Token',
                 'expires_in'   => '2147483647',

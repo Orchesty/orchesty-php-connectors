@@ -8,6 +8,7 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shopify\ShopifyApplication;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
 use Hanaboso\Utils\File\File;
@@ -95,21 +96,23 @@ final class ShopifyApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shopify\ShopifyApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shopify\ShopifyApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $fields = $this->application->getSettingsForm()->getFields();
-        foreach ($fields as $field) {
-            self::assertContains(
-                $field->getKey(),
-                [
-                    BasicApplicationInterface::USER,
-                    BasicApplicationInterface::PASSWORD,
-                ],
-            );
+        $forms = $this->application->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            foreach ($form->getFields() as $field) {
+                self::assertContains(
+                    $field->getKey(),
+                    [
+                        BasicApplicationInterface::USER,
+                        BasicApplicationInterface::PASSWORD,
+                    ],
+                );
+            }
         }
     }
 
@@ -190,7 +193,7 @@ final class ShopifyApplicationTest extends DatabaseTestCaseAbstract
 
         $applicationInstall->setSettings(
             [
-                BasicApplicationInterface::AUTHORIZATION_SETTINGS =>
+                ApplicationInterface::AUTHORIZATION_FORM =>
                     [
                         BasicApplicationInterface::USER     => self::ESHOP_NAME,
                         BasicApplicationInterface::PASSWORD => self::PASSWORD,

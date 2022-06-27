@@ -9,6 +9,7 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\CommonsBundle\Transport\CurlManagerInterface;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Mailchimp\MailchimpApplication;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Application\Repository\ApplicationInstallRepository;
@@ -71,7 +72,7 @@ final class MailchimpTagContactConnector extends ConnectorAbstract
                 sprintf(
                     '%s/3.0/lists/%s/segments/%s/members',
                     $apiEndpoint,
-                    $applicationInstall->getSettings()[MailchimpApplication::FORM][MailchimpApplication::AUDIENCE_ID],
+                    $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][MailchimpApplication::AUDIENCE_ID],
                     $applicationInstall->getSettings()[MailchimpApplication::SEGMENT_ID],
                 ),
                 $dto->getData(),

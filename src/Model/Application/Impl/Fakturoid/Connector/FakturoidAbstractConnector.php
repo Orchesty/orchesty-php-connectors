@@ -8,7 +8,7 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\CommonsBundle\Transport\CurlManagerInterface;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\FakturoidApplication;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Application\Repository\ApplicationInstallRepository;
@@ -78,7 +78,7 @@ abstract class FakturoidAbstractConnector extends ConnectorAbstract
             '%s/%s/%s/%s',
             FakturoidApplication::BASE_URL,
             FakturoidApplication::BASE_ACCOUNTS,
-            $applicationInstall->getSettings()[ApplicationAbstract::FORM][FakturoidApplication::ACCOUNT],
+            $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][FakturoidApplication::ACCOUNT],
             static::ENDPOINT,
         );
 

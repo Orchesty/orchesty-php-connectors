@@ -8,7 +8,6 @@ use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookSubscription;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Hubspot\Connector\HubSpotCreateContactConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Hubspot\HubSpotApplication;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationInterface;
@@ -64,19 +63,21 @@ final class HubspotApplicationTest extends DatabaseTestCaseAbstract
     /**
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
         $this->setApplication();
-        $fields = $this->application->getSettingsForm()->getFields();
-        foreach ($fields as $field) {
-            self::assertContainsEquals(
-                $field->getKey(),
-                [
-                    HubSpotApplication::APP_ID,
-                    OAuth2ApplicationInterface::CLIENT_ID,
-                    OAuth2ApplicationInterface::CLIENT_SECRET,
-                ],
-            );
+        $forms = $this->application->getFormStack()->getForms();
+        foreach ($forms as $form){
+            foreach ($form->getFields() as $field) {
+                self::assertContainsEquals(
+                    $field->getKey(),
+                    [
+                        HubSpotApplication::APP_ID,
+                        OAuth2ApplicationInterface::CLIENT_ID,
+                        OAuth2ApplicationInterface::CLIENT_SECRET,
+                    ],
+                );
+            }
         }
     }
 
@@ -159,10 +160,10 @@ final class HubspotApplicationTest extends DatabaseTestCaseAbstract
         $applicationInstall = new ApplicationInstall();
         $applicationInstall->setSettings(
             [
-                ApplicationAbstract::FORM                    => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
                     HubSpotApplication::APP_ID => '123xx',
+                    ApplicationInterface::TOKEN => [OAuth2Provider::ACCESS_TOKEN => 'token123'],
                 ],
-                ApplicationInterface::AUTHORIZATION_SETTINGS => [ApplicationInterface::TOKEN => [OAuth2Provider::ACCESS_TOKEN => 'token123']],
             ],
         );
         $this->pfd(DataProvider::getOauth2AppInstall($this->application->getName()));

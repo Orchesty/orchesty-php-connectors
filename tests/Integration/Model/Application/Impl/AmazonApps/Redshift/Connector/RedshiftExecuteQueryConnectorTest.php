@@ -7,6 +7,7 @@ use Exception;
 use Hanaboso\CommonsBundle\Process\ProcessDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps\Redshift\Connector\RedshiftExecuteQueryConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps\Redshift\RedshiftApplication;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\Utils\String\Json;
@@ -125,7 +126,7 @@ final class RedshiftExecuteQueryConnectorTest extends DatabaseTestCaseAbstract
             ->setUser(self::USER)
             ->setSettings(
                 [
-                    RedshiftApplication::FORM => [
+                    ApplicationInterface::AUTHORIZATION_FORM => [
                         RedshiftApplication::KEY         => 'Key',
                         RedshiftApplication::SECRET      => 'Secret',
                         RedshiftApplication::REGION      => 'eu-central-1',

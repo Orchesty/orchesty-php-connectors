@@ -13,6 +13,7 @@ use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
 use Hanaboso\Utils\String\Json;
@@ -95,15 +96,17 @@ final class PipedriveApplication extends BasicApplicationAbstract implements Web
     }
 
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
-        $form  = new Form();
-        $field = new Field(Field::TEXT, BasicApplicationAbstract::USER, 'API token', NULL, TRUE);
-        $form->addField($field);
+        $form = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
+        $form->addField(new Field(Field::TEXT, BasicApplicationAbstract::USER, 'API token', NULL, TRUE));
 
-        return $form;
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
     /**
@@ -116,7 +119,7 @@ final class PipedriveApplication extends BasicApplicationAbstract implements Web
         return
             isset(
                 $applicationInstall->getSettings(
-                )[ApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationInterface::USER],
+                )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationInterface::USER],
             );
     }
 
@@ -221,7 +224,7 @@ final class PipedriveApplication extends BasicApplicationAbstract implements Web
     private function getToken(ApplicationInstall $applicationInstall): string
     {
         return $applicationInstall->getSettings(
-        )[BasicApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationAbstract::USER];
+        )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationAbstract::USER];
     }
 
 }

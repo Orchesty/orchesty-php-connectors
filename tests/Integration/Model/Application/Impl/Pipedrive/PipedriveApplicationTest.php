@@ -104,10 +104,13 @@ final class PipedriveApplicationTest extends DatabaseTestCaseAbstract
     /**
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $field = $this->application->getSettingsForm()->getFields();
-        self::assertContains($field[0]->getKey(), ['user']);
+        $forms = $this->application->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            $field = $form->getFields();
+            self::assertContains($field[0]->getKey(), ['user']);
+        }
     }
 
     /**

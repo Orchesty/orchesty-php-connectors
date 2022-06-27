@@ -5,7 +5,6 @@ namespace HbPFConnectorsTests\Integration\Model\Application\Impl\Fakturoid;
 use Exception;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\FakturoidApplication;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
@@ -55,14 +54,16 @@ final class FakturoidApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\FakturoidApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\FakturoidApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $form = $this->app->getSettingsForm();
-        self::assertCount(3, $form->getFields());
+        $forms = $this->app->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            self::assertCount(3, $form->getFields());
+        }
     }
 
     /**
@@ -75,12 +76,10 @@ final class FakturoidApplicationTest extends DatabaseTestCaseAbstract
         $applicationInstall = new ApplicationInstall();
         $applicationInstall->setSettings(
             [
-                ApplicationInterface::AUTHORIZATION_SETTINGS => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
                     BasicApplicationInterface::USER     => 'hana******.com',
                     BasicApplicationInterface::PASSWORD => 'cf4*****191bbef40dcd86*****625ec4c4*****',
-                ],
-                ApplicationAbstract::FORM                    => [
-                    FakturoidApplication::ACCOUNT => 'test',
+                    FakturoidApplication::ACCOUNT       => 'test',
                 ],
             ],
         );
@@ -98,12 +97,10 @@ final class FakturoidApplicationTest extends DatabaseTestCaseAbstract
         $applicationInstall = new ApplicationInstall();
         $applicationInstall->setSettings(
             [
-                ApplicationInterface::AUTHORIZATION_SETTINGS => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
                     BasicApplicationInterface::USER     => 'hana******.com',
                     BasicApplicationInterface::PASSWORD => 'cf4*****191bbef40dcd86*****625ec4c4*****',
-                ],
-                ApplicationAbstract::FORM                    => [
-                    FakturoidApplication::ACCOUNT => 'test',
+                    FakturoidApplication::ACCOUNT       => 'test',
                 ],
             ],
         );

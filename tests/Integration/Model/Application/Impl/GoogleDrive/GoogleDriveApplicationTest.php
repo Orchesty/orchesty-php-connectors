@@ -92,14 +92,16 @@ final class GoogleDriveApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\GoogleDrive\GoogleDriveApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\GoogleDrive\GoogleDriveApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $form = $this->app->getSettingsForm();
-        self::assertCount(2, $form->getFields());
+        $forms = $this->app->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            self::assertCount(2, $form->getFields());
+        }
     }
 
     /**

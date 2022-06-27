@@ -9,9 +9,11 @@ use Hanaboso\CommonsBundle\Transport\Curl\Dto\RequestDto;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookApplicationInterface;
 use Hanaboso\HbPFAppStore\Model\Webhook\WebhookSubscription;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
 use Hanaboso\Utils\String\Json;
@@ -94,13 +96,19 @@ final class ShopifyApplication extends BasicApplicationAbstract implements Webho
     }
 
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
-        return (new Form())
+        $form = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
+        $form
             ->addField(new Field(Field::TEXT, BasicApplicationInterface::USER, 'Shop name', NULL, TRUE))
             ->addField(new Field(Field::TEXT, BasicApplicationAbstract::PASSWORD, 'App password', NULL, TRUE));
+
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
     /**
@@ -188,7 +196,7 @@ final class ShopifyApplication extends BasicApplicationAbstract implements Webho
     private function getPassword(ApplicationInstall $applicationInstall): string
     {
         return $applicationInstall->getSettings(
-        )[BasicApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationInterface::PASSWORD];
+        )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationInterface::PASSWORD];
     }
 
     /**
@@ -213,7 +221,7 @@ final class ShopifyApplication extends BasicApplicationAbstract implements Webho
      */
     private function getShopName(ApplicationInstall $applicationInstall): string
     {
-        return $applicationInstall->getSettings()[BasicApplicationInterface::AUTHORIZATION_SETTINGS][self::USER];
+        return $applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::USER];
     }
 
 }

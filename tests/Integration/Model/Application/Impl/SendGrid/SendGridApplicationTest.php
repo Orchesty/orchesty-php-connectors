@@ -65,7 +65,7 @@ final class SendGridApplicationTest extends DatabaseTestCaseAbstract
         self::assertFalse($this->app->isAuthorized($appInstall));
 
         $appInstall->setSettings(
-            [ApplicationInterface::AUTHORIZATION_SETTINGS => [SendGridApplication::API_KEY => 'key']],
+            [ApplicationInterface::AUTHORIZATION_FORM => [SendGridApplication::API_KEY => 'key']],
         );
         self::assertTrue($this->app->isAuthorized($appInstall));
     }
@@ -81,7 +81,7 @@ final class SendGridApplicationTest extends DatabaseTestCaseAbstract
         $appInstall = DataProvider::createApplicationInstall(
             $this->app->getName(),
             'user',
-            [ApplicationInterface::AUTHORIZATION_SETTINGS => [SendGridApplication::API_KEY => 'key']],
+            [ApplicationInterface::AUTHORIZATION_FORM => [SendGridApplication::API_KEY => 'key']],
         );
 
         $dto = $this->app->getRequestDto($appInstall, CurlManager::METHOD_POST, NULL, Json::encode(['foo' => 'bar']));
@@ -95,14 +95,16 @@ final class SendGridApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\SendGrid\SendGridApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\SendGrid\SendGridApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $form = $this->app->getSettingsForm();
-        self::assertCount(1, $form->getFields());
+        $forms = $this->app->getFormStack()->getForms();
+        foreach ($forms as $form) {
+            self::assertCount(1, $form->getFields());
+        }
     }
 
     /**

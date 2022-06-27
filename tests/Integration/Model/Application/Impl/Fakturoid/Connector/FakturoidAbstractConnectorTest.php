@@ -6,7 +6,6 @@ use Exception;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\Connector\FakturoidAbstractConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\FakturoidApplication;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
@@ -52,14 +51,11 @@ abstract class FakturoidAbstractConnectorTest extends DatabaseTestCaseAbstract
         $applicationInstall = new ApplicationInstall();
         $applicationInstall->setSettings(
             [
-                ApplicationInterface::AUTHORIZATION_SETTINGS => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
                     BasicApplicationInterface::USER     => 'hana******.com',
                     BasicApplicationInterface::PASSWORD => 'cf4*****191bbef40dcd86*****625ec4c4*****',
+                    FakturoidApplication::ACCOUNT       => $account,
                 ],
-                ApplicationAbstract::FORM                    =>
-                    [
-                        FakturoidApplication::ACCOUNT => $account,
-                    ],
             ],
         );
 
@@ -82,11 +78,9 @@ abstract class FakturoidAbstractConnectorTest extends DatabaseTestCaseAbstract
         $applicationInstall = new ApplicationInstall();
         $applicationInstall->setSettings(
             [
-                ApplicationInterface::AUTHORIZATION_SETTINGS => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
                     BasicApplicationInterface::USER => 'hana******.com',
-                ],
-                ApplicationAbstract::FORM                    => [
-                    FakturoidApplication::ACCOUNT => $account,
+                    FakturoidApplication::ACCOUNT   => $account,
                 ],
             ],
         );

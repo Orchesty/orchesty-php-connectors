@@ -76,14 +76,15 @@ final class IDokladApplicationTest extends DatabaseTestCaseAbstract
     }
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\IDoklad\IDokladApplication::getSettingsForm
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\IDoklad\IDokladApplication::getFormStack
      *
      * @throws Exception
      */
-    public function testGetSettingsForm(): void
+    public function testGetFormStack(): void
     {
-        $form = $this->app->getSettingsForm();
-        self::assertCount(2, $form->getFields());
+        foreach ($this->app->getFormStack()->getForms() as $form){
+            self::assertCount(2, $form->getFields());
+        }
     }
 
     /**

@@ -10,6 +10,7 @@ use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
 
 /**
@@ -54,7 +55,7 @@ final class SendGridApplication extends BasicApplicationAbstract
      */
     public function isAuthorized(ApplicationInstall $applicationInstall): bool
     {
-        return isset($applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_SETTINGS][self::API_KEY]);
+        return isset($applicationInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM][self::API_KEY]);
     }
 
     /**
@@ -79,7 +80,7 @@ final class SendGridApplication extends BasicApplicationAbstract
         }
 
         $settings = $applicationInstall->getSettings();
-        $token    = $settings[ApplicationInterface::AUTHORIZATION_SETTINGS][self::API_KEY];
+        $token    = $settings[ApplicationInterface::AUTHORIZATION_FORM][self::API_KEY];
         $dto      = new RequestDto(
             $method,
             new Uri($url ?? self::BASE_URL),
@@ -94,14 +95,17 @@ final class SendGridApplication extends BasicApplicationAbstract
     }
 
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
-        $form  = new Form();
-        $field = new Field(Field::TEXT, self::API_KEY, 'Api key', NULL, TRUE);
+        $form = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
+        $form->addField(new Field(Field::TEXT, self::API_KEY, 'Api key', NULL, TRUE));
 
-        return $form->addField($field);
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
 }

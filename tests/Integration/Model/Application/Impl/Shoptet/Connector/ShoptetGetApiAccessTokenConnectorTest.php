@@ -8,7 +8,6 @@ use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetGetApiAccessTokenConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\ShoptetApplication;
 use Hanaboso\PhpCheckUtils\PhpUnit\Traits\PrivateTrait;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Authorization\Provider\OAuth2Provider;
@@ -95,10 +94,10 @@ final class ShoptetGetApiAccessTokenConnectorTest extends DatabaseTestCaseAbstra
             ShoptetApplication::SHOPTET_KEY,
             'user',
             [
-                ApplicationInterface::AUTHORIZATION_SETTINGS => [
+                ApplicationInterface::AUTHORIZATION_FORM => [
                     ApplicationInterface::TOKEN => [OAuth2Provider::ACCESS_TOKEN => '___access_token__'],
+                    ShoptetApplication::API_TOKEN_URL => self::API_TOKEN_URL,
                 ],
-                ApplicationAbstract::FORM                    => [ShoptetApplication::API_TOKEN_URL => self::API_TOKEN_URL],
             ],
         );
         $this->pfd($applicationInstall);

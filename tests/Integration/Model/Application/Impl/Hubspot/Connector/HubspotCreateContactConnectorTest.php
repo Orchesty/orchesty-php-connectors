@@ -9,7 +9,7 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Hubspot\Connector\HubSpotCreateContactConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Hubspot\HubSpotApplication;
-use Hanaboso\PipesPhpSdk\Application\Base\ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\Utils\File\File;
 use Hanaboso\Utils\String\Json;
@@ -166,10 +166,12 @@ final class HubspotCreateContactConnectorTest extends DatabaseTestCaseAbstract
     {
         $appInstall = DataProvider::getOauth2AppInstall($this->app->getName());
         $appInstall->setSettings(
-            array_merge(
-                $appInstall->getSettings(),
-                [ApplicationAbstract::FORM => [HubSpotApplication::APP_ID => 'app_id'],],
-            ),
+            [
+                ApplicationInterface::AUTHORIZATION_FORM => [
+                    ...$appInstall->getSettings()[ApplicationInterface::AUTHORIZATION_FORM],
+                    HubSpotApplication::APP_ID => 'app_id',
+                ],
+            ],
         );
 
         return $appInstall;

@@ -4,11 +4,12 @@ namespace Hanaboso\HbPFConnectors\Model\Application\Impl\Nutshell;
 
 use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\RequestDto;
+use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Field;
 use Hanaboso\PipesPhpSdk\Application\Model\Form\Form;
+use Hanaboso\PipesPhpSdk\Application\Model\Form\FormStack;
 use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationAbstract;
-use Hanaboso\PipesPhpSdk\Authorization\Base\Basic\BasicApplicationInterface;
 
 /**
  * Class NutshellApplication
@@ -76,13 +77,19 @@ final class NutshellApplication extends BasicApplicationAbstract
     }
 
     /**
-     * @return Form
+     * @return FormStack
      */
-    public function getSettingsForm(): Form
+    public function getFormStack(): FormStack
     {
-        return (new Form())
+        $form = new Form(ApplicationInterface::AUTHORIZATION_FORM, 'Authorization settings');
+        $form
             ->addField(new Field(Field::TEXT, BasicApplicationAbstract::USER, 'Username', NULL, TRUE))
             ->addField(new Field(Field::TEXT, BasicApplicationAbstract::PASSWORD, 'API Key', NULL, TRUE));
+
+        $formStack = new FormStack();
+        $formStack->addForm($form);
+
+        return $formStack;
     }
 
     /**
@@ -96,9 +103,9 @@ final class NutshellApplication extends BasicApplicationAbstract
             sprintf(
                 '%s:%s',
                 $applicationInstall->getSettings(
-                )[BasicApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationAbstract::USER],
+                )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationAbstract::USER],
                 $applicationInstall->getSettings(
-                )[BasicApplicationInterface::AUTHORIZATION_SETTINGS][BasicApplicationAbstract::PASSWORD],
+                )[ApplicationInterface::AUTHORIZATION_FORM][BasicApplicationAbstract::PASSWORD],
             ),
         );
     }
