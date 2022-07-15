@@ -151,12 +151,12 @@ final class HubspotApplicationTest extends DatabaseTestCaseAbstract
     public function testGetWebhookSubscribeRequestDto(): void
     {
         $this->setApplication();
-        $hubspotCreateContactConnector = new HubSpotCreateContactConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
+        $hubspotCreateContactConnector = new HubSpotCreateContactConnector();
+        $hubspotCreateContactConnector
+            ->setSender(self::getContainer()->get('hbpf.transport.curl_manager'))
+            ->setDb($this->dm)
+            ->setApplication($this->application);
 
-        $hubspotCreateContactConnector->setApplication($this->application);
         $applicationInstall = new ApplicationInstall();
         $applicationInstall->setSettings(
             [

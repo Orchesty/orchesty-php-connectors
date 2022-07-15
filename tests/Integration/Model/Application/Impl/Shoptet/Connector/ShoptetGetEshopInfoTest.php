@@ -27,8 +27,8 @@ final class ShoptetGetEshopInfoTest extends DatabaseTestCaseAbstract
     use PrivateTrait;
 
     private const HEADERS = [
-        'pf-user'        => 'user',
-        'pf-application' => ShoptetApplication::SHOPTET_KEY,
+        'user'        => 'user',
+        'application' => ShoptetApplication::SHOPTET_KEY,
     ];
 
     /**
@@ -37,11 +37,11 @@ final class ShoptetGetEshopInfoTest extends DatabaseTestCaseAbstract
     private ShoptetGetEshopInfo $connector;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetGetEshopInfo::getId()
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetGetEshopInfo::getName()
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
-        self::assertEquals('shoptet-get-eshop-info', $this->connector->getId());
+        self::assertEquals('shoptet-get-eshop-info', $this->connector->getName());
     }
 
     /**

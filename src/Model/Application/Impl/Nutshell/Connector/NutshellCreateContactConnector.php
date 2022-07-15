@@ -2,20 +2,15 @@
 
 namespace Hanaboso\HbPFConnectors\Model\Application\Impl\Nutshell\Connector;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Hanaboso\CommonsBundle\Process\ProcessDto;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
-use Hanaboso\CommonsBundle\Transport\CurlManagerInterface;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Nutshell\NutshellApplication;
-use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
-use Hanaboso\PipesPhpSdk\Application\Repository\ApplicationInstallRepository;
 use Hanaboso\PipesPhpSdk\Connector\ConnectorAbstract;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\Utils\Exception\PipesFrameworkException;
 use Hanaboso\Utils\String\Json;
-use JsonException;
 
 /**
  * Class NutshellCreateContactConnector
@@ -25,28 +20,14 @@ use JsonException;
 final class NutshellCreateContactConnector extends ConnectorAbstract
 {
 
-    /**
-     * @var ApplicationInstallRepository
-     */
-    private ApplicationInstallRepository $repository;
-
-    /**
-     * NutshellCreateContactConnector constructor.
-     *
-     * @param CurlManagerInterface $curlManager
-     * @param DocumentManager      $dm
-     */
-    public function __construct(private CurlManagerInterface $curlManager, DocumentManager $dm)
-    {
-        $this->repository = $dm->getRepository(ApplicationInstall::class);
-    }
+    public const NAME = 'nutshell-create-contact';
 
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return 'nutshell-create-contact';
+        return self::NAME;
     }
 
     /**
@@ -54,21 +35,20 @@ final class NutshellCreateContactConnector extends ConnectorAbstract
      *
      * @return ProcessDto
      * @throws ApplicationInstallException
+     * @throws ConnectorException
      * @throws CurlException
      * @throws PipesFrameworkException
-     * @throws ConnectorException
-     * @throws JsonException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {
-        $applicationInstall = $this->repository->findUserAppByHeaders($dto);
+        $applicationInstall = $this->getApplicationInstallFromProcess($dto);
 
-        $data = Json::decode($dto->getData());
+        $data = $dto->getJsonData();
 
         $data['jsonrpc'] = '2.0';
         $data['method']  = 'newContact';
 
-        $return = $this->curlManager->send(
+        $return = $this->getSender()->send(
             $this->getApplication()->getRequestDto(
                 $applicationInstall,
                 CurlManager::METHOD_POST,

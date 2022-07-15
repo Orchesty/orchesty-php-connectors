@@ -2,14 +2,9 @@
 
 namespace Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Hanaboso\CommonsBundle\Exception\OnRepeatException;
 use Hanaboso\CommonsBundle\Process\ProcessDto;
-use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\ShoptetApplication;
-use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
-use Hanaboso\PipesPhpSdk\Application\Repository\ApplicationInstallRepository;
 use Hanaboso\PipesPhpSdk\Connector\ConnectorAbstract;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\PipesPhpSdk\Utils\ProcessHeaderTrait;
@@ -32,40 +27,11 @@ abstract class ShoptetConnectorAbstract extends ConnectorAbstract
     protected const REPEATER_INTERVAL = 5_000;
 
     /**
-     * @var DocumentRepository<ApplicationInstall>&ApplicationInstallRepository
-     */
-    protected ApplicationInstallRepository $repository;
-
-    /**
      * ShoptetConnectorAbstract constructor.
-     *
-     * @param DocumentManager $dm
-     * @param CurlManager     $sender
      */
-    public function __construct(DocumentManager $dm, protected CurlManager $sender)
+    public function __construct()
     {
-        $this->repository = $dm->getRepository(ApplicationInstall::class);
-        $this->host       = ShoptetApplication::SHOPTET_URL;
-    }
-
-    /**
-     * @param ProcessDto $dto
-     *
-     * @return ApplicationInstall
-     * @throws ConnectorException
-     */
-    protected function getApplicationInstall(ProcessDto $dto): ApplicationInstall
-    {
-        $id = $this->getHeaderByKey($dto, self::ID);
-
-        /** @var ApplicationInstall|null $applicationInstall */
-        $applicationInstall = $this->repository->findOneBy([self::ID => $id]);
-
-        if (!$applicationInstall) {
-            throw $this->createMissingApplicationInstallException($id);
-        }
-
-        return $applicationInstall;
+        $this->host = ShoptetApplication::SHOPTET_URL;
     }
 
     /**

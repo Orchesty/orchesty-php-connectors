@@ -30,10 +30,10 @@ final class S3GetObjectConnector extends S3ObjectConnectorAbstract
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {
-        $content = $this->getJsonContent($dto);
+        $content = $dto->getJsonData();
         $this->checkParameters([self::NAME], $content);
 
-        $applicationInstall = $this->getApplicationInstall($dto);
+        $applicationInstall = $this->getApplicationInstallFromProcess($dto);
         /** @var S3Application $application */
         $application = $this->getApplication();
         $client      = $application->getS3Client($applicationInstall);
@@ -56,13 +56,13 @@ final class S3GetObjectConnector extends S3ObjectConnectorAbstract
             unlink($path);
         }
 
-        return $this->setJsonContent($dto, [self::NAME => $content[self::NAME], self::CONTENT => $fileContent]);
+        return $dto->setJsonData([self::NAME => $content[self::NAME], self::CONTENT => $fileContent]);
     }
 
     /**
      * @return string
      */
-    protected function getCustomId(): string
+    protected function getCustomName(): string
     {
         return 'get-object';
     }

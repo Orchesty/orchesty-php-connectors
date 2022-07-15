@@ -11,7 +11,6 @@ use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\PipesPhpSdk\Utils\ProcessContentTrait;
 use Hanaboso\Utils\System\PipesHeaders;
-use JsonException;
 
 /**
  * Class ShoptetUpdatedOrderConnector
@@ -23,6 +22,8 @@ final class ShoptetUpdatedOrderConnector extends ShoptetConnectorAbstract
 
     use ProcessContentTrait;
 
+    public const NAME = 'shoptet-updated-order-connector';
+
     private const URL = 'api/orders/%s?include=notes';
 
     private const EVENT_INSTANCE = 'eventInstance';
@@ -31,9 +32,9 @@ final class ShoptetUpdatedOrderConnector extends ShoptetConnectorAbstract
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return 'shoptet-updated-order-connector';
+        return self::NAME;
     }
 
     /**
@@ -43,7 +44,6 @@ final class ShoptetUpdatedOrderConnector extends ShoptetConnectorAbstract
      * @throws ApplicationInstallException
      * @throws ConnectorException
      * @throws OnRepeatException
-     * @throws JsonException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {
@@ -53,9 +53,9 @@ final class ShoptetUpdatedOrderConnector extends ShoptetConnectorAbstract
 
         try {
             $data = $this->processResponse(
-                $this->sender->send(
+                $this->getSender()->send(
                     $this->getApplication()->getRequestDto(
-                        $this->repository->findUserAppByHeaders($dto),
+                        $this->getApplicationInstallFromProcess($dto),
                         CurlManager::METHOD_GET,
                         $this->getUrl(self::URL, $this->getContentByKey($dto, self::EVENT_INSTANCE)),
                     )->setDebugInfo($dto),
@@ -63,7 +63,7 @@ final class ShoptetUpdatedOrderConnector extends ShoptetConnectorAbstract
                 $dto,
             )[self::DATA][self::ORDER];
 
-            return $this->setJsonContent($dto, $data);
+            return $dto->setJsonData($data);
         } catch (CurlException $e) {
             throw $this->createRepeatException($dto, $e);
         }

@@ -22,12 +22,11 @@ final class MailchimpCreateContactConnectorTest extends DatabaseTestCaseAbstract
     public function testProcessAction(): void
     {
         $app                             = self::getContainer()->get('hbpf.application.mailchimp');
-        $mailchimpCreateContactConnector = new MailchimpCreateContactConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
-
-        $mailchimpCreateContactConnector->setApplication($app);
+        $mailchimpCreateContactConnector = new MailchimpCreateContactConnector();
+        $mailchimpCreateContactConnector
+            ->setDb($this->dm)
+            ->setSender(self::getContainer()->get('hbpf.transport.curl_manager'))
+            ->setApplication($app);
 
         $applicationInstall = DataProvider::getOauth2AppInstall(
             $app->getName(),

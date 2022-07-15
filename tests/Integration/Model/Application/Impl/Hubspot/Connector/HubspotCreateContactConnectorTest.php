@@ -31,16 +31,15 @@ final class HubspotCreateContactConnectorTest extends DatabaseTestCaseAbstract
     private HubSpotApplication $app;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Hubspot\Connector\HubSpotCreateContactConnector::getId
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Hubspot\Connector\HubSpotCreateContactConnector::__construct
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Hubspot\Connector\HubSpotCreateContactConnector::getName
      *
      * @throws Exception
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
         self::assertEquals(
             'hub-spot.create-contact',
-            $this->createConnector(DataProvider::createResponseDto())->getId(),
+            $this->createConnector(DataProvider::createResponseDto())->getName(),
         );
     }
 
@@ -93,12 +92,13 @@ final class HubspotCreateContactConnectorTest extends DatabaseTestCaseAbstract
             Json::encode(['name' => 'John Doe', 'email' => 'noreply@johndoe.com', 'phone' => '555-555']),
         );
 
-        $ex  = File::getContent(__DIR__ . '/data/hubspot409Response.json');
-        $res = $this->createConnector(
+        $ex        = File::getContent(__DIR__ . '/data/hubspot409Response.json');
+        $connector = $this->createConnector(
             DataProvider::createResponseDto($ex, 409),
-        )
-            ->setApplication($this->app)
-            ->processAction($dto);
+        );
+        $connector->setApplication($this->app);
+        $connector->setLogger(new NullLogger());
+        $res = $connector->processAction($dto);
         self::assertEquals($ex, $res->getData());
     }
 
@@ -155,7 +155,12 @@ final class HubspotCreateContactConnectorTest extends DatabaseTestCaseAbstract
             $sender->method('send')->willReturn($dto);
         }
 
-        return new HubSpotCreateContactConnector($sender, $this->dm);
+        $hubSpotCreateContactConnector = new HubSpotCreateContactConnector();
+        $hubSpotCreateContactConnector
+            ->setDb($this->dm)
+            ->setSender($sender);
+
+        return $hubSpotCreateContactConnector;
     }
 
     /**

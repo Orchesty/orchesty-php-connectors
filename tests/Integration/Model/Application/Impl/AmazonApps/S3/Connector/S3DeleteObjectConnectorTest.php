@@ -44,7 +44,7 @@ final class S3DeleteObjectConnectorTest extends DatabaseTestCaseAbstract
 
         $dto = (new ProcessDto())
             ->setData(Json::encode(['name' => 'Test']))
-            ->setHeaders(['pf-application' => self::KEY, 'pf-user' => self::USER]);
+            ->setHeaders(['application' => self::KEY, 'user' => self::USER]);
         $dto = $this->connector->processAction($dto);
 
         self::assertEquals('Test', Json::decode($dto->getData())['name']);
@@ -63,7 +63,7 @@ final class S3DeleteObjectConnectorTest extends DatabaseTestCaseAbstract
 
         $this->createApplication();
 
-        $dto = (new ProcessDto())->setHeaders(['pf-application' => self::KEY, 'pf-user' => self::USER]);
+        $dto = (new ProcessDto())->setHeaders(['application' => self::KEY, 'user' => self::USER]);
 
         $this->connector->processAction($dto);
     }
@@ -94,7 +94,7 @@ final class S3DeleteObjectConnectorTest extends DatabaseTestCaseAbstract
 
         $dto = (new ProcessDto())
             ->setData(Json::encode(['name' => 'Test', 'content' => 'Content']))
-            ->setHeaders(['pf-application' => self::KEY, 'pf-user' => self::USER]);
+            ->setHeaders(['application' => self::KEY, 'user' => self::USER]);
 
         $this->connector->processAction($dto);
     }
@@ -110,7 +110,7 @@ final class S3DeleteObjectConnectorTest extends DatabaseTestCaseAbstract
 
         $dto = (new ProcessDto())
             ->setData(Json::encode(['name' => 'Test', 'content' => 'Content']))
-            ->setHeaders(['pf-application' => self::KEY, 'pf-user' => self::USER]);
+            ->setHeaders(['application' => self::KEY, 'user' => self::USER]);
 
         self::getContainer()
             ->get('hbpf.connector.s3-create-object')

@@ -25,8 +25,8 @@ final class ShoptetGetApiAccessTokenConnectorTest extends DatabaseTestCaseAbstra
     use PrivateTrait;
 
     private const HEADERS = [
-        'pf-user'        => 'user',
-        'pf-application' => ShoptetApplication::SHOPTET_KEY,
+        'user'        => 'user',
+        'application' => ShoptetApplication::SHOPTET_KEY,
     ];
 
     private const API_TOKEN_URL = 'https://12345.myshoptet.com/action/ApiOAuthServer/getAccessToken';
@@ -37,11 +37,11 @@ final class ShoptetGetApiAccessTokenConnectorTest extends DatabaseTestCaseAbstra
     private ShoptetGetApiAccessTokenConnector $connector;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetGetApiAccessTokenConnector::getId
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetGetApiAccessTokenConnector::getName
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
-        self::assertEquals('shoptet-get-access-token', $this->connector->getId());
+        self::assertEquals('shoptet-get-access-token', $this->connector->getName());
     }
 
     /**

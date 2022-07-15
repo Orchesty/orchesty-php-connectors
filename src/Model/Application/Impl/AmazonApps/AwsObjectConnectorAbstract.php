@@ -2,11 +2,8 @@
 
 namespace Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\Persistence\ObjectRepository;
-use Hanaboso\CommonsBundle\Process\ProcessDto;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
-use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Application\Repository\ApplicationInstallRepository;
 use Hanaboso\PipesPhpSdk\Connector\ConnectorAbstract;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
@@ -41,28 +38,13 @@ abstract class AwsObjectConnectorAbstract extends ConnectorAbstract
     /**
      * @return string
      */
-    abstract protected function getCustomId(): string;
+    abstract protected function getCustomName(): string;
 
     /**
      * AwsObjectConnectorAbstract constructor.
-     *
-     * @param DocumentManager $dm
      */
-    public function __construct(DocumentManager $dm)
-    {
-        $this->repository = $dm->getRepository(ApplicationInstall::class);
-    }
-
-    /**
-     * @param ProcessDto $dto
-     *
-     * @return ApplicationInstall
-     * @throws ApplicationInstallException
-     */
-    protected function getApplicationInstall(ProcessDto $dto): ApplicationInstall
-    {
-        return $this->repository->findUserAppByHeaders($dto);
-    }
+    public function __construct()
+    {}
 
     /**
      * @param mixed[] $parameters

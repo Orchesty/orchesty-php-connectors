@@ -3,7 +3,7 @@
 namespace HbPFConnectorsTests\Integration\Model\Application\Impl\Shipstation\Connector;
 
 use Exception;
-use Hanaboso\CommonsBundle\Process\ProcessDto;
+use Hanaboso\CommonsBundle\Process\ProcessDtoAbstract;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shipstation\Connector\ShipstationNewOrderConnector;
 use Hanaboso\Utils\File\File;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
@@ -42,12 +42,11 @@ final class ShipstationNewOrderConnectorTest extends DatabaseTestCaseAbstract
         );
 
         $app                          = self::getContainer()->get('hbpf.application.shipstation');
-        $shipstationNewOrderConnector = new ShipstationNewOrderConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
-
-        $shipstationNewOrderConnector->setApplication($app);
+        $shipstationNewOrderConnector = new ShipstationNewOrderConnector();
+        $shipstationNewOrderConnector
+            ->setSender(self::getContainer()->get('hbpf.transport.curl_manager'))
+            ->setDb($this->dm)
+            ->setApplication($app);
 
         $applicationInstall = DataProvider::getBasicAppInstall(
             $app->getName(),
@@ -84,7 +83,7 @@ final class ShipstationNewOrderConnectorTest extends DatabaseTestCaseAbstract
             );
         }
 
-        self::assertEquals(ProcessDto::STOP_AND_FAILED, $responseNoUrl->getHeaders()['pf-result-code']);
+        self::assertEquals(ProcessDtoAbstract::STOP_AND_FAILED, $responseNoUrl->getHeaders()['result-code']);
     }
 
     /**
@@ -101,15 +100,13 @@ final class ShipstationNewOrderConnectorTest extends DatabaseTestCaseAbstract
     /**
      *
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
-        $shipstationNewOrderConnector = new ShipstationNewOrderConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
+        $shipstationNewOrderConnector = new ShipstationNewOrderConnector();
+
         self::assertEquals(
             'shipstation_new_order',
-            $shipstationNewOrderConnector->getId(),
+            $shipstationNewOrderConnector->getName(),
         );
     }
 

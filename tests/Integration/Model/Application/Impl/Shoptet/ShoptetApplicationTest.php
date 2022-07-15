@@ -435,8 +435,8 @@ final class ShoptetApplicationTest extends DatabaseTestCaseAbstract
             'api token',
             $jsonContent,
             [
-                'pf-user'        => 'user',
-                'pf-application' => ShoptetApplication::SHOPTET_KEY,
+                'user'        => 'user',
+                'application' => ShoptetApplication::SHOPTET_KEY,
             ],
         );
 

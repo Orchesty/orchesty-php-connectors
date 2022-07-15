@@ -3,7 +3,7 @@
 namespace HbPFConnectorsTests\Integration\Model\Application\Impl\Hubspot\Mapper;
 
 use Exception;
-use Hanaboso\CommonsBundle\Process\ProcessDto;
+use Hanaboso\CommonsBundle\Process\ProcessDtoAbstract;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Hubspot\Mapper\HubSpotCreateContactMapper;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shipstation\Connector\ShipstationNewOrderConnector;
 use Hanaboso\Utils\File\File;
@@ -39,12 +39,11 @@ final class HubspotCreateContactMapperTest extends DatabaseTestCaseAbstract
         );
 
         $shipstation                  = self::getContainer()->get('hbpf.application.shipstation');
-        $shipstationNewOrderConnector = new ShipstationNewOrderConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
-
-        $shipstationNewOrderConnector->setApplication($shipstation);
+        $shipstationNewOrderConnector = new ShipstationNewOrderConnector();
+        $shipstationNewOrderConnector
+            ->setDb($this->dm)
+            ->setSender(self::getContainer()->get('hbpf.transport.curl_manager'))
+            ->setApplication($shipstation);
 
         $applicationInstall = DataProvider::getBasicAppInstall(
             $shipstation->getName(),
@@ -80,7 +79,7 @@ final class HubspotCreateContactMapperTest extends DatabaseTestCaseAbstract
             Json::decode(File::getContent(__DIR__ . '/Data/requestHubspot.json')),
         );
 
-        self::assertEquals(ProcessDto::STOP_AND_FAILED, $dtoNoBody->getHeaders()['pf-result-code']);
+        self::assertEquals(ProcessDtoAbstract::STOP_AND_FAILED, $dtoNoBody->getHeaders()['result-code']);
     }
 
 }

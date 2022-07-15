@@ -27,16 +27,15 @@ final class GoogleDriveUploadFileConnectorTest extends DatabaseTestCaseAbstract
     private GoogleDriveApplication $app;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\GoogleDrive\Connector\GoogleDriveUploadFileConnector::getId
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\GoogleDrive\Connector\GoogleDriveUploadFileConnector::__construct
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\GoogleDrive\Connector\GoogleDriveUploadFileConnector::getName
      *
      * @throws Exception
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
         self::assertEquals(
             'google-drive.upload-file',
-            $this->createConnector(DataProvider::createResponseDto())->getId(),
+            $this->createConnector(DataProvider::createResponseDto())->getName(),
         );
     }
 
@@ -124,7 +123,12 @@ final class GoogleDriveUploadFileConnectorTest extends DatabaseTestCaseAbstract
             $sender->method('send')->willReturn($dto);
         }
 
-        return new GoogleDriveUploadFileConnector($this->dm, $sender);
+        $googleDriveUploadFileConnector = new GoogleDriveUploadFileConnector();
+        $googleDriveUploadFileConnector
+            ->setDb($this->dm)
+            ->setSender($sender);
+
+        return $googleDriveUploadFileConnector;
     }
 
 }

@@ -8,10 +8,10 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\ShoptetApplication;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
+use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\PipesPhpSdk\Connector\Traits\ProcessExceptionTrait;
 use Hanaboso\Utils\Exception\PipesFrameworkException;
-use JsonException;
 
 /**
  * Class ShoptetUpdateOrderConnector
@@ -23,31 +23,34 @@ final class ShoptetUpdateOrderConnector extends ShoptetConnectorAbstract
 
     use ProcessExceptionTrait;
 
+    public const NAME = 'shoptet-update-order';
+
     private const URL = '/api/orders/%s/status?suppressDocumentGeneration=true&suppressEmailSending=true&suppressSmsSending=true';
 
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return 'shoptet-update-order';
+        return self::NAME;
     }
 
     /**
      * @param ProcessDto $dto
      *
      * @return ProcessDto
+     * @throws ApplicationInstallException
      * @throws ConnectorException
      * @throws OnRepeatException
      * @throws PipesFrameworkException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {
-        $applicationInstall = $this->getApplicationInstall($dto);
+        $applicationInstall = $this->getApplicationInstallFromProcess($dto);
 
         try {
             $response = $this->processResponse(
-                $this->sender->send(
+                $this->getSender()->send(
                     $this->getApplication()->getRequestDto(
                         $applicationInstall,
                         CurlManager::METHOD_PATCH,
@@ -65,8 +68,8 @@ final class ShoptetUpdateOrderConnector extends ShoptetConnectorAbstract
                 $dto,
             );
 
-            return $this->setJsonContent($dto, $response)->setStopProcess(ProcessDto::DO_NOT_CONTINUE, 'Order updated');
-        } catch (CurlException | JsonException $e) {
+            return $dto->setJsonData($response)->setStopProcess(ProcessDto::DO_NOT_CONTINUE, 'Order updated');
+        } catch (CurlException $e) {
             throw $this->createRepeatException($dto, $e, self::REPEATER_INTERVAL);
         }
     }

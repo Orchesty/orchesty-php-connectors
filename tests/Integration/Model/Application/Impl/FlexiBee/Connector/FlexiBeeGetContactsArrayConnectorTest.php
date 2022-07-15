@@ -23,15 +23,15 @@ final class FlexiBeeGetContactsArrayConnectorTest extends DatabaseTestCaseAbstra
 {
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\Connector\FlexiBeeGetContactsArrayConnector::getId
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\Connector\FlexiBeeGetContactsArrayConnector::getName
      *
      * @throws Exception
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
         self::assertEquals(
             'flexibee.get-contacts-array',
-            $this->createConnector(DataProvider::createResponseDto())->getId(),
+            $this->createConnector(DataProvider::createResponseDto())->getName(),
         );
     }
 
@@ -56,6 +56,7 @@ final class FlexiBeeGetContactsArrayConnectorTest extends DatabaseTestCaseAbstra
         )
             ->setApplication($this->getApp())
             ->processAction($dto);
+
         self::assertEquals($body, $res->getData());
     }
 
@@ -137,7 +138,12 @@ final class FlexiBeeGetContactsArrayConnectorTest extends DatabaseTestCaseAbstra
             $sender->method('send')->willReturn($dto);
         }
 
-        return new FlexiBeeGetContactsArrayConnector($this->dm, $sender);
+        $flexiBeeGetContactsArrayConnector = new FlexiBeeGetContactsArrayConnector();
+        $flexiBeeGetContactsArrayConnector
+            ->setSender($sender)
+            ->setDb($this->dm);
+
+        return $flexiBeeGetContactsArrayConnector;
     }
 
 }

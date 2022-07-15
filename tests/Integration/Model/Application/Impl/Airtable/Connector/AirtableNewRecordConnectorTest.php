@@ -4,6 +4,8 @@ namespace HbPFConnectorsTests\Integration\Model\Application\Impl\Airtable\Connec
 
 use Exception;
 use Hanaboso\CommonsBundle\Process\ProcessDto;
+use Hanaboso\CommonsBundle\Process\ProcessDtoAbstract;
+use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Airtable\AirtableApplication;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Airtable\Connector\AirtableNewRecordConnector;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
@@ -59,7 +61,7 @@ final class AirtableNewRecordConnectorTest extends DatabaseTestCaseAbstract
 
         self::assertFailedProcessResponse($response, 'response500.json');
 
-        self::assertEquals(ProcessDto::STOP_AND_FAILED, $response->getHeaders()['pf-result-code']);
+        self::assertEquals(ProcessDto::STOP_AND_FAILED, $response->getHeaders()['result-code']);
     }
 
     /**
@@ -77,18 +79,18 @@ final class AirtableNewRecordConnectorTest extends DatabaseTestCaseAbstract
 
         self::assertFailedProcessResponse($response, 'newRecord.json');
 
-        self::assertEquals(ProcessDto::STOP_AND_FAILED, $response->getHeaders()['pf-result-code']);
+        self::assertEquals(ProcessDtoAbstract::STOP_AND_FAILED, $response->getHeaders()['result-code']);
     }
 
     /**
      *
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
-        $airtableNewRecordConnector = $this->setApplication();
+        $airtableNewRecordConnector = new AirtableNewRecordConnector();
         self::assertEquals(
             'airtable_new_record',
-            $airtableNewRecordConnector->getId(),
+            $airtableNewRecordConnector->getName(),
         );
     }
 
@@ -105,16 +107,19 @@ final class AirtableNewRecordConnectorTest extends DatabaseTestCaseAbstract
 
     /**
      * @return AirtableNewRecordConnector
+     * @throws Exception
      */
     private function setApplication(): AirtableNewRecordConnector
     {
-        $app                        = self::getContainer()->get('hbpf.application.airtable');
-        $airtableNewRecordConnector = new AirtableNewRecordConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
-
-        $airtableNewRecordConnector->setApplication($app);
+        /** @var AirtableApplication $app */
+        $app = self::getContainer()->get('hbpf.application.airtable');
+        /** @var CurlManager $curl */
+        $curl                       = self::getContainer()->get('hbpf.transport.curl_manager');
+        $airtableNewRecordConnector = new AirtableNewRecordConnector();
+        $airtableNewRecordConnector
+            ->setSender($curl)
+            ->setDb($this->dm)
+            ->setApplication($app);
 
         return $airtableNewRecordConnector;
     }

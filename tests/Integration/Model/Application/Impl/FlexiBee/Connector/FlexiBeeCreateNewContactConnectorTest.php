@@ -23,15 +23,15 @@ final class FlexiBeeCreateNewContactConnectorTest extends DatabaseTestCaseAbstra
 {
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\Connector\FlexiBeeCreateNewContactConnector::getId
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\FlexiBee\Connector\FlexiBeeCreateNewContactConnector::getName
      *
      * @throws Exception
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
         self::assertEquals(
             'flexibee.create-new-contact',
-            $this->createConnector(DataProvider::createResponseDto())->getId(),
+            $this->createConnector(DataProvider::createResponseDto())->getName(),
         );
     }
 
@@ -128,8 +128,8 @@ final class FlexiBeeCreateNewContactConnectorTest extends DatabaseTestCaseAbstra
             ->createConnector(DataProvider::createResponseDto(), new CurlException())
             ->setApplication($this->getApp())
             ->processAction($dto);
-        self::assertArrayHasKey('pf-result-code', $response->getHeaders());
-        self::assertEquals('1003', $response->getHeaders()['pf-result-code']);
+        self::assertArrayHasKey('result-code', $response->getHeaders());
+        self::assertEquals('1003', $response->getHeaders()['result-code']);
     }
 
     /**
@@ -187,7 +187,12 @@ final class FlexiBeeCreateNewContactConnectorTest extends DatabaseTestCaseAbstra
             $sender->method('send')->willReturn($dto);
         }
 
-        return new FlexiBeeCreateNewContactConnector($this->dm, $sender);
+        $flexibeeCreateNewContact = new FlexiBeeCreateNewContactConnector();
+        $flexibeeCreateNewContact
+            ->setSender($sender)
+            ->setDb($this->dm);
+
+        return $flexibeeCreateNewContact;
     }
 
 }

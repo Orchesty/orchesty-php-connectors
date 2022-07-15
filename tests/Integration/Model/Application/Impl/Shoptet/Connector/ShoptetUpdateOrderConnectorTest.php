@@ -10,10 +10,10 @@ use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetUpda
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\ShoptetApplication;
 use Hanaboso\PhpCheckUtils\PhpUnit\Traits\PrivateTrait;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
+use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\Utils\File\File;
 use Hanaboso\Utils\String\Json;
-use Hanaboso\Utils\System\PipesHeaders;
 use HbPFConnectorsTests\DatabaseTestCaseAbstract;
 use HbPFConnectorsTests\DataProvider;
 
@@ -27,17 +27,17 @@ final class ShoptetUpdateOrderConnectorTest extends DatabaseTestCaseAbstract
 
     use PrivateTrait;
 
-    private const ID          = 'pf-id';
-    private const TYPE        = 'pf-type';
-    private const EXTERNAL_ID = 'pf-external-id';
+    private const ID          = 'id';
+    private const TYPE        = 'type';
+    private const EXTERNAL_ID = 'external-id';
     private const USER        = 'user';
     private const SENDER      = 'sender';
 
     private const HEADERS = [
-        'pf-user'         => self::USER,
+        'user'            => self::USER,
         self::TYPE        => 'cancelled',
-        'pf-application'  => ShoptetApplication::SHOPTET_KEY,
-        'pf-internal-id'  => '1',
+        'application'     => ShoptetApplication::SHOPTET_KEY,
+        'internal-id'     => '1',
         self::EXTERNAL_ID => '1',
     ];
 
@@ -66,11 +66,11 @@ final class ShoptetUpdateOrderConnectorTest extends DatabaseTestCaseAbstract
     private ShoptetUpdateOrderConnector $connector;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetUpdateOrderConnector::getId
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetUpdateOrderConnector::getName
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
-        self::assertEquals('shoptet-update-order', $this->connector->getId());
+        self::assertEquals('shoptet-update-order', $this->connector->getName());
     }
 
     /**
@@ -111,7 +111,7 @@ final class ShoptetUpdateOrderConnectorTest extends DatabaseTestCaseAbstract
         $this->dm->clear();
 
         self::assertEquals('', Json::decode($dto->getData())['errors']);
-        self::assertArrayHasKey(PipesHeaders::createKey('user'), $dto->getHeaders());
+        self::assertArrayHasKey('user', $dto->getHeaders());
     }
 
     /**
@@ -121,13 +121,30 @@ final class ShoptetUpdateOrderConnectorTest extends DatabaseTestCaseAbstract
      */
     public function testProcessActionMissingHeader(): void
     {
+
+        $applicationInstall = DataProvider::createApplicationInstall(
+            ShoptetApplication::SHOPTET_KEY,
+            self::USER,
+            self::SETTINGS,
+            self::NON_ENCRYPTED_SETTINGS,
+        );
+        $this->pfd($applicationInstall);
+
         self::assertException(
             ConnectorException::class,
             ConnectorException::CONNECTOR_FAILED_TO_PROCESS,
-            "Connector 'shoptet-update-order': Header 'id' does not exist!",
+            "Connector 'shoptet-update-order': invalid-token: Invalid access token.",
         );
 
-        $this->connector->processAction($this->prepareProcessDto([], [self::TYPE => 'Type']));
+        $this->connector->processAction(
+            $this->prepareProcessDto(
+                [],
+                [
+                    self::TYPE => 'Type',
+                    self::USER => self::USER,
+                ],
+            ),
+        );
     }
 
     /**
@@ -139,13 +156,23 @@ final class ShoptetUpdateOrderConnectorTest extends DatabaseTestCaseAbstract
      */
     public function testProcessActionMissingApplicationInstall(): void
     {
+
         self::assertException(
-            ConnectorException::class,
-            ConnectorException::CONNECTOR_FAILED_TO_PROCESS,
-            "Connector 'shoptet-update-order': ApplicationInstall with key 'Unknown' does not exist!",
+            ApplicationInstallException::class,
+            ApplicationInstallException::APP_WAS_NOT_FOUND,
+            'Application [shoptet] was not found .',
         );
 
-        $this->connector->processAction($this->prepareProcessDto([], [self::ID => 'Unknown', self::TYPE => 'Type']));
+        $this->connector->processAction(
+            $this->prepareProcessDto(
+                [],
+                [
+                    self::ID   => 'Unknown',
+                    self::TYPE => 'Type',
+                    self::USER => self::USER,
+                ],
+            ),
+        );
     }
 
     /**
@@ -179,6 +206,7 @@ final class ShoptetUpdateOrderConnectorTest extends DatabaseTestCaseAbstract
             $this->prepareProcessDto(
                 [],
                 [
+                    self::USER        => self::USER,
                     self::EXTERNAL_ID => '1',
                     self::ID          => $applicationInstall->getId(),
                 ],
@@ -223,6 +251,7 @@ final class ShoptetUpdateOrderConnectorTest extends DatabaseTestCaseAbstract
                 [
                     self::EXTERNAL_ID => '1',
                     self::TYPE        => 'Type',
+                    self::USER        => self::USER,
                     self::ID          => $applicationInstall->getId(),
                 ],
             ),
@@ -268,6 +297,7 @@ final class ShoptetUpdateOrderConnectorTest extends DatabaseTestCaseAbstract
             $this->prepareProcessDto(
                 [],
                 [
+                    self::USER        => self::USER,
                     self::EXTERNAL_ID => '1',
                     self::ID          => $applicationInstall->getId(),
                 ],

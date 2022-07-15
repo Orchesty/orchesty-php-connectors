@@ -28,8 +28,7 @@ final class IDokladNewInvoiceRecievedConnectorTest extends DatabaseTestCaseAbstr
     private IDokladApplication $app;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\IDoklad\Connector\IDokladNewInvoiceRecievedConnector::getId
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\IDoklad\Connector\IDokladNewInvoiceRecievedConnector::__construct
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\IDoklad\Connector\IDokladNewInvoiceRecievedConnector::getName
      *
      * @throws Exception
      */
@@ -37,7 +36,7 @@ final class IDokladNewInvoiceRecievedConnectorTest extends DatabaseTestCaseAbstr
     {
         self::assertEquals(
             'i-doklad.new-invoice-recieved',
-            $this->createConnector(DataProvider::createResponseDto())->getId(),
+            $this->createConnector(DataProvider::createResponseDto())->getName(),
         );
     }
 
@@ -116,7 +115,7 @@ final class IDokladNewInvoiceRecievedConnectorTest extends DatabaseTestCaseAbstr
         )
             ->setApplication($this->app)
             ->processAction($dto);
-        self::assertEquals('1003', $dto->getHeaders()['pf-result-code']);
+        self::assertEquals('1003', $dto->getHeaders()['result-code']);
     }
 
     /**
@@ -149,7 +148,12 @@ final class IDokladNewInvoiceRecievedConnectorTest extends DatabaseTestCaseAbstr
             $sender->method('send')->willReturn($dto);
         }
 
-        return new IDokladNewInvoiceRecievedConnector($this->dm, $sender);
+        $iDokladNewInvoiceRecievedConnector = new IDokladNewInvoiceRecievedConnector();
+        $iDokladNewInvoiceRecievedConnector
+            ->setSender($sender)
+            ->setDb($this->dm);
+
+        return $iDokladNewInvoiceRecievedConnector;
     }
 
 }

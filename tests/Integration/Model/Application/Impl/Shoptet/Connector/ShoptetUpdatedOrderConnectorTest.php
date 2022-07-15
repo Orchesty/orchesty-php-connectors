@@ -4,7 +4,7 @@ namespace HbPFConnectorsTests\Integration\Model\Application\Impl\Shoptet\Connect
 
 use Exception;
 use Hanaboso\CommonsBundle\Exception\OnRepeatException;
-use Hanaboso\CommonsBundle\Process\ProcessDto;
+use Hanaboso\CommonsBundle\Process\ProcessDtoAbstract;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetUpdatedOrderConnector;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\ShoptetApplication;
@@ -26,8 +26,8 @@ final class ShoptetUpdatedOrderConnectorTest extends DatabaseTestCaseAbstract
     private const USER    = 'user';
     private const SENDER  = 'sender';
     private const HEADERS = [
-        'pf-user'        => self::USER,
-        'pf-application' => ShoptetApplication::SHOPTET_KEY,
+        'user'        => self::USER,
+        'application' => ShoptetApplication::SHOPTET_KEY,
     ];
 
     private const SETTINGS = [
@@ -51,11 +51,11 @@ final class ShoptetUpdatedOrderConnectorTest extends DatabaseTestCaseAbstract
     private ShoptetUpdatedOrderConnector $connector;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetUpdatedOrderConnector::getId
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetUpdatedOrderConnector::getName
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
-        self::assertEquals('shoptet-updated-order-connector', $this->connector->getId());
+        self::assertEquals('shoptet-updated-order-connector', $this->connector->getName());
     }
 
     /**
@@ -189,7 +189,7 @@ final class ShoptetUpdatedOrderConnectorTest extends DatabaseTestCaseAbstract
     {
         self::assertException(
             OnRepeatException::class,
-            ProcessDto::DO_NOT_CONTINUE,
+            ProcessDtoAbstract::DO_NOT_CONTINUE,
             sprintf(
                 "Connector 'shoptet-updated-order-connector': %s: Connector 'shoptet-updated-order-connector': ERROR: Something gone wrong!",
                 ConnectorException::class,

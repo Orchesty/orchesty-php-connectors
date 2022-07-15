@@ -28,8 +28,7 @@ final class IDokladCreateNewContactConnectorTest extends DatabaseTestCaseAbstrac
     private IDokladApplication $app;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\IDoklad\Connector\IDokladCreateNewContactConnector::getId
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\IDoklad\Connector\IDokladCreateNewContactConnector::__construct
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\IDoklad\Connector\IDokladCreateNewContactConnector::getName
      *
      * @throws Exception
      */
@@ -37,7 +36,7 @@ final class IDokladCreateNewContactConnectorTest extends DatabaseTestCaseAbstrac
     {
         self::assertEquals(
             'i-doklad.create-new-contact',
-            $this->createConnector(DataProvider::createResponseDto())->getId(),
+            $this->createConnector(DataProvider::createResponseDto())->getName(),
         );
     }
 
@@ -116,7 +115,7 @@ final class IDokladCreateNewContactConnectorTest extends DatabaseTestCaseAbstrac
         )
             ->setApplication($this->app)
             ->processAction($dto);
-        self::assertEquals('1003', $dto->getHeaders()['pf-result-code']);
+        self::assertEquals('1003', $dto->getHeaders()['result-code']);
     }
 
     /**
@@ -149,7 +148,12 @@ final class IDokladCreateNewContactConnectorTest extends DatabaseTestCaseAbstrac
             $sender->method('send')->willReturn($dto);
         }
 
-        return new IDokladCreateNewContactConnector($this->dm, $sender);
+        $iDokladCreateNewContactConnector = new IDokladCreateNewContactConnector();
+        $iDokladCreateNewContactConnector
+            ->setSender($sender)
+            ->setDb($this->dm);
+
+        return $iDokladCreateNewContactConnector;
     }
 
 }

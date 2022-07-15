@@ -22,14 +22,16 @@ use JsonException;
 final class ShoptetRegisterWebhookConnector extends ShoptetConnectorAbstract
 {
 
+    public const NAME = 'shoptet-register-webhook-connector';
+
     private const WEBHOOK_URL = 'api/webhooks';
 
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return 'shoptet-register-webhook-connector';
+        return self::NAME;
     }
 
     /**
@@ -48,7 +50,7 @@ final class ShoptetRegisterWebhookConnector extends ShoptetConnectorAbstract
     {
         /** @var ShoptetApplication $application */
         $application        = $this->application;
-        $applicationInstall = $this->repository->findUserAppByHeaders($dto);
+        $applicationInstall = $this->getApplicationInstallFromProcess($dto);
 
         $requestDto = $application
             ->getRequestDto($applicationInstall, CurlManager::METHOD_POST, $this->getUrl(self::WEBHOOK_URL))
@@ -56,7 +58,7 @@ final class ShoptetRegisterWebhookConnector extends ShoptetConnectorAbstract
         foreach ($application->getWebhookSubscriptions() as $subscription) {
             try {
                 $this->processResponse(
-                    $this->sender->send(
+                    $this->getSender()->send(
                         $requestDto->setBody(
                             Json::encode(
                                 [

@@ -45,12 +45,11 @@ final class MailchimpCreateContactConnectorTest extends DatabaseTestCaseAbstract
         );
 
         $app                             = self::getContainer()->get('hbpf.application.mailchimp');
-        $mailchimpCreateContactConnector = new MailchimpCreateContactConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
-
-        $mailchimpCreateContactConnector->setApplication($app);
+        $mailchimpCreateContactConnector = new MailchimpCreateContactConnector();
+        $mailchimpCreateContactConnector
+            ->setSender(self::getContainer()->get('hbpf.transport.curl_manager'))
+            ->setDb($this->dm)
+            ->setApplication($app);
 
         $applicationInstall = DataProvider::getOauth2AppInstall(
             $app->getName(),
@@ -104,15 +103,13 @@ final class MailchimpCreateContactConnectorTest extends DatabaseTestCaseAbstract
     /**
      * @throws Exception
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
-        $mailchimpCreateContactConnector = new MailchimpCreateContactConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
+        $mailchimpCreateContactConnector = new MailchimpCreateContactConnector();
+
         self::assertEquals(
             'mailchimp_create_contact',
-            $mailchimpCreateContactConnector->getId(),
+            $mailchimpCreateContactConnector->getName(),
         );
     }
 

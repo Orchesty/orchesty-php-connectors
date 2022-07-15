@@ -22,12 +22,11 @@ final class MailchimpTagContactConnectorTest extends DatabaseTestCaseAbstract
     public function testProcessAction(): void
     {
         $app                          = self::getContainer()->get('hbpf.application.mailchimp');
-        $mailchimpTagContactConnector = new MailchimpTagContactConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
-
-        $mailchimpTagContactConnector->setApplication($app);
+        $mailchimpTagContactConnector = new MailchimpTagContactConnector();
+        $mailchimpTagContactConnector
+            ->setSender(self::getContainer()->get('hbpf.transport.curl_manager'))
+            ->setDb($this->dm)
+            ->setApplication($app);
 
         $applicationInstall = DataProvider::getOauth2AppInstall(
             $app->getName(),

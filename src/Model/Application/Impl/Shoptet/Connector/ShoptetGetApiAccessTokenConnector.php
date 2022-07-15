@@ -7,7 +7,6 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\ShoptetApplication;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
-use JsonException;
 
 /**
  * Class ShoptetGetApiAccessTokenConnector
@@ -17,12 +16,14 @@ use JsonException;
 final class ShoptetGetApiAccessTokenConnector extends ShoptetConnectorAbstract
 {
 
+    public const NAME = 'shoptet-get-access-token';
+
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return 'shoptet-get-access-token';
+        return self::NAME;
     }
 
     /**
@@ -31,14 +32,13 @@ final class ShoptetGetApiAccessTokenConnector extends ShoptetConnectorAbstract
      * @return ProcessDto
      * @throws ApplicationInstallException
      * @throws CurlException
-     * @throws JsonException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {
-        $applicationInstall = $this->repository->findUserAppByHeaders($dto);
+        $applicationInstall = $this->getApplicationInstallFromProcess($dto);
         $response           = $this->processActionArray($applicationInstall, $dto);
 
-        return $this->setJsonContent($dto, $response);
+        return $dto->setJsonData($response);
     }
 
     /**
@@ -48,7 +48,6 @@ final class ShoptetGetApiAccessTokenConnector extends ShoptetConnectorAbstract
      * @return mixed[]
      * @throws ApplicationInstallException
      * @throws CurlException
-     * @throws JsonException
      */
     public function processActionArray(ApplicationInstall $applicationInstall, ?ProcessDto $processDto = NULL): array
     {
@@ -59,7 +58,7 @@ final class ShoptetGetApiAccessTokenConnector extends ShoptetConnectorAbstract
             $requestDto->setDebugInfo($processDto);
         }
 
-        return $this->sender->send($requestDto)->getJsonBody();
+        return $this->getSender()->send($requestDto)->getJsonBody();
     }
 
 }

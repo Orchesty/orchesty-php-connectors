@@ -3,25 +3,34 @@
 namespace Hanaboso\HbPFConnectors\Model\Application\Impl\Mailchimp\Mapper;
 
 use Hanaboso\CommonsBundle\Process\ProcessDto;
-use Hanaboso\PipesPhpSdk\CustomNode\CustomNodeAbstract;
+use Hanaboso\CommonsBundle\Process\ProcessDtoAbstract;
+use Hanaboso\PipesPhpSdk\CustomNode\CommonNodeAbstract;
 use Hanaboso\Utils\Exception\PipesFrameworkException;
 use Hanaboso\Utils\String\Json;
-use JsonException;
 
 /**
  * Class MailchimpCreateContactMapper
  *
  * @package Hanaboso\HbPFConnectors\Model\Application\Impl\Mailchimp\Mapper
  */
-final class MailchimpCreateContactMapper extends CustomNodeAbstract
+final class MailchimpCreateContactMapper extends CommonNodeAbstract
 {
+
+    public const NAME = 'mailchimp_create_contact_mapper';
+
+    /**
+     * @return string
+     */
+    function getName(): string
+    {
+        return self::NAME;
+    }
 
     /**
      * @param ProcessDto $dto
      *
      * @return ProcessDto
      * @throws PipesFrameworkException
-     * @throws JsonException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {
@@ -29,7 +38,7 @@ final class MailchimpCreateContactMapper extends CustomNodeAbstract
 
         if (!isset($body['properties'])) {
             $message = 'There is missing field "properties" in ProcessDto.';
-            $dto->setStopProcess(ProcessDto::STOP_AND_FAILED, $message);
+            $dto->setStopProcess(ProcessDtoAbstract::STOP_AND_FAILED, $message);
 
             return $dto;
         }

@@ -5,23 +5,22 @@ namespace Hanaboso\HbPFConnectors\Model\Application\Impl\OAuth2\Connector;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Doctrine\Persistence\ObjectRepository;
-use Hanaboso\CommonsBundle\Process\ProcessDto;
+use Hanaboso\CommonsBundle\Process\BatchProcessDto;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Application\Repository\ApplicationInstallRepository;
-use Hanaboso\PipesPhpSdk\Connector\ConnectorAbstract;
+use Hanaboso\PipesPhpSdk\Batch\BatchAbstract;
 use Hanaboso\Utils\Date\DateTimeUtils;
 use Hanaboso\Utils\Exception\DateTimeException;
-use Hanaboso\Utils\String\Json;
 
 /**
  * Class GetApplicationForRefreshBatchConnector
  *
  * @package Hanaboso\HbPFConnectors\Model\Application\Impl\OAuth2\Connector
  */
-final class GetApplicationForRefreshBatchConnector extends ConnectorAbstract
+final class GetApplicationForRefreshBatchConnector extends BatchAbstract
 {
 
-    public const APPLICATION_ID = 'get_application_for_refresh';
+    public const NAME = 'get_application_for_refresh';
 
     /**
      * @var ObjectRepository<ApplicationInstall>&ApplicationInstallRepository
@@ -35,43 +34,41 @@ final class GetApplicationForRefreshBatchConnector extends ConnectorAbstract
      */
     public function __construct(DocumentManager $dm)
     {
-        $this->repository = $dm->getRepository(ApplicationInstall::class);
+        /** @var ApplicationInstallRepository $appInstallRepo */
+        $appInstallRepo   = $dm->getRepository(ApplicationInstall::class);
+        $this->repository = $appInstallRepo;
     }
 
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return self::APPLICATION_ID;
+        return self::NAME;
     }
 
     /**
-     * @param ProcessDto $dto
+     * @param BatchProcessDto $dto
      *
-     * @return ProcessDto
+     * @return BatchProcessDto
      * @throws DateTimeException
      * @throws MongoDBException
      */
-    public function processAction(ProcessDto $dto): ProcessDto
+    public function processAction(BatchProcessDto $dto): BatchProcessDto
     {
-        // TODO batch connector v2
         $time = DateTimeUtils::getUtcDateTime('1 hour');
 
         /** @var ApplicationInstall[] $applications */
         $applications = $this->repository
             ->createQueryBuilder()
-            ->select('_id')
             ->field('expires')->lte($time)
             ->field('expires')->notEqual(NULL)
             ->getQuery()
             ->execute();
 
-        $ids = [];
         foreach ($applications as $app) {
-            $ids[] = [self::APPLICATION_ID => $app->getId()];
+            $dto->addItem([],$app->getUser());
         }
-        $dto->setData(Json::encode($ids));
 
         return $dto;
     }

@@ -19,8 +19,7 @@ final class FakturoidGetAccountDetailConnectorTest extends FakturoidAbstractConn
 {
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\Connector\FakturoidGetAccountDetailConnector::getId
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\Connector\FakturoidGetAccountDetailConnector::__construct
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Fakturoid\Connector\FakturoidGetAccountDetailConnector::getName
      *
      * @throws Exception
      */
@@ -28,7 +27,7 @@ final class FakturoidGetAccountDetailConnectorTest extends FakturoidAbstractConn
     {
         self::assertEquals(
             'fakturoid.get-account-detail',
-            $this->createConnector(DataProvider::createResponseDto())->getId(),
+            $this->createConnector(DataProvider::createResponseDto())->getName(),
         );
     }
 
@@ -60,7 +59,7 @@ final class FakturoidGetAccountDetailConnectorTest extends FakturoidAbstractConn
         $response = $fakturoidGetAccountDetailConnector->processAction(
             DataProvider::getProcessDto('fakturoid'),
         );
-        self::assertEquals('1006', $response->getHeaders()['pf-result-code']);
+        self::assertEquals('1006', $response->getHeaders()['result-code']);
     }
 
     /**
@@ -83,7 +82,12 @@ final class FakturoidGetAccountDetailConnectorTest extends FakturoidAbstractConn
             $sender->method('send')->willReturn($dto);
         }
 
-        return new FakturoidGetAccountDetailConnector($sender, $this->dm);
+        $fakturoidGetAccountDetailConnector = new FakturoidGetAccountDetailConnector();
+        $fakturoidGetAccountDetailConnector
+            ->setSender($sender)
+            ->setDb($this->dm);
+
+        return $fakturoidGetAccountDetailConnector;
     }
 
     /**
@@ -92,12 +96,11 @@ final class FakturoidGetAccountDetailConnectorTest extends FakturoidAbstractConn
     public function setApplication(): FakturoidGetAccountDetailConnector
     {
         $app                = self::getContainer()->get('hbpf.application.fakturoid');
-        $fakturoidConnector = new FakturoidGetAccountDetailConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
-
-        $fakturoidConnector->setApplication($app);
+        $fakturoidConnector = new FakturoidGetAccountDetailConnector();
+        $fakturoidConnector
+            ->setDb($this->dm)
+            ->setSender(self::getContainer()->get('hbpf.transport.curl_manager'))
+            ->setApplication($app);
 
         return $fakturoidConnector;
     }

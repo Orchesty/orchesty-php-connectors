@@ -29,7 +29,7 @@ final class S3GetObjectConnectorTest extends DatabaseTestCaseAbstract
 
     private const KEY     = 's3';
     private const USER    = 'user';
-    private const HEADERS = ['pf-application' => self::KEY, 'pf-user' => self::USER];
+    private const HEADERS = ['application' => self::KEY, 'user' => self::USER];
 
     /**
      * @var S3GetObjectConnector

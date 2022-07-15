@@ -30,14 +30,16 @@ final class SendGridSendEmailConnectorTest extends DatabaseTestCaseAbstract
     private SendGridApplication $app;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\SendGrid\Connector\SendGridSendEmailConnector::getId
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\SendGrid\Connector\SendGridSendEmailConnector::__construct
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\SendGrid\Connector\SendGridSendEmailConnector::getName
      *
      * @throws Exception
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
-        self::assertEquals('send-grid.send-email', $this->createConnector(DataProvider::createResponseDto())->getId());
+        self::assertEquals(
+            'send-grid.send-email',
+            $this->createConnector(DataProvider::createResponseDto())->getName(),
+        );
     }
 
     /**
@@ -151,7 +153,12 @@ final class SendGridSendEmailConnectorTest extends DatabaseTestCaseAbstract
             $sender->method('send')->willReturn($dto);
         }
 
-        return new SendGridSendEmailConnector($this->dm, $sender);
+        $sendGridSendEmailConnector = new SendGridSendEmailConnector();
+        $sendGridSendEmailConnector
+            ->setSender($sender)
+            ->setDb($this->dm);
+
+        return $sendGridSendEmailConnector;
     }
 
     /**

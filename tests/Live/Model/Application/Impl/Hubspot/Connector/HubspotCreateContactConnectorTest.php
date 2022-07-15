@@ -23,12 +23,11 @@ final class HubspotCreateContactConnectorTest extends DatabaseTestCaseAbstract
     public function testProcessAction(): void
     {
         $app                           = self::getContainer()->get('hbpf.application.hub-spot');
-        $hubspotCreateContactConnector = new HubSpotCreateContactConnector(
-            self::getContainer()->get('hbpf.transport.curl_manager'),
-            $this->dm,
-        );
-
-        $hubspotCreateContactConnector->setApplication($app);
+        $hubspotCreateContactConnector = new HubSpotCreateContactConnector();
+        $hubspotCreateContactConnector
+            ->setSender(self::getContainer()->get('hbpf.transport.curl_manager'))
+            ->setDb($this->dm)
+            ->setApplication($app);
 
         $this->pfd(
             DataProvider::getOauth2AppInstall(

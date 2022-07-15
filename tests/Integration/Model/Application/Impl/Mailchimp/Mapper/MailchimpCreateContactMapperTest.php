@@ -3,7 +3,7 @@
 namespace HbPFConnectorsTests\Integration\Model\Application\Impl\Mailchimp\Mapper;
 
 use Exception;
-use Hanaboso\CommonsBundle\Process\ProcessDto;
+use Hanaboso\CommonsBundle\Process\ProcessDtoAbstract;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Mailchimp\MailchimpApplication;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Mailchimp\Mapper\MailchimpCreateContactMapper;
 use Hanaboso\Utils\File\File;
@@ -71,7 +71,7 @@ final class MailchimpCreateContactMapperTest extends DatabaseTestCaseAbstract
             Json::decode(File::getContent(sprintf('%s/Data/requestMailchimp.json', __DIR__))),
         );
 
-        self::assertEquals(ProcessDto::STOP_AND_FAILED, $dtoNoBody->getHeaders()['pf-result-code']);
+        self::assertEquals(ProcessDtoAbstract::STOP_AND_FAILED, $dtoNoBody->getHeaders()['result-code']);
     }
 
 }

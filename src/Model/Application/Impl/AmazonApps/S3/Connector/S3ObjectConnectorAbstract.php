@@ -18,9 +18,9 @@ abstract class S3ObjectConnectorAbstract extends AwsObjectConnectorAbstract
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return sprintf('s3-%s', $this->getCustomId());
+        return sprintf('s3-%s', $this->getCustomName());
     }
 
     /**

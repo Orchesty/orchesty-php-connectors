@@ -26,8 +26,8 @@ final class ShoptetRegisterWebhookConnectorTest extends DatabaseTestCaseAbstract
     private const SENDER = 'sender';
 
     private const HEADERS = [
-        'pf-user'        => self::USER,
-        'pf-application' => ShoptetApplication::SHOPTET_KEY,
+        'user'        => self::USER,
+        'application' => ShoptetApplication::SHOPTET_KEY,
     ];
 
     private const SETTINGS = [
@@ -51,11 +51,11 @@ final class ShoptetRegisterWebhookConnectorTest extends DatabaseTestCaseAbstract
     private ShoptetRegisterWebhookConnector $connector;
 
     /**
-     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetRegisterWebhookConnector::getId
+     * @covers \Hanaboso\HbPFConnectors\Model\Application\Impl\Shoptet\Connector\ShoptetRegisterWebhookConnector::getName
      */
-    public function testGetId(): void
+    public function testGetName(): void
     {
-        self::assertEquals('shoptet-register-webhook-connector', $this->connector->getId());
+        self::assertEquals('shoptet-register-webhook-connector', $this->connector->getName());
     }
 
     /**
