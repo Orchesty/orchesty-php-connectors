@@ -11,4 +11,5 @@
         </properties>
     </rule>
     <exclude-pattern>*/Redshift/Connector/RedshiftExecuteQueryConnectorTest.php</exclude-pattern>
+    <exclude-pattern>*/reference.php</exclude-pattern>
 </ruleset>

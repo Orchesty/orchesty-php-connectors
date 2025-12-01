@@ -9,6 +9,11 @@ parameters:
 		- '#Unreachable statement \- code above always terminates.#'
 		- '#PHPDoc tag @var for variable \$(application|innerApplication|providerMock) contains unresolvable type#'
 		- '#Parameter \#1 \$haystack of function str_contains expects string#'
+		- 
+			identifier: missingType.generics
+		-
+			message: '#.*#'
+			path: ../tests/app/config/reference.php
 	ergebnis:
 		classesAllowedToBeExtended:
 			- Hanaboso\HbPFConnectors\DependencyInjection\HbPFConnectorsExtension
