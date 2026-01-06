@@ -19,6 +19,7 @@ use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PipesPhpSdkTests\MockServer\Mock;
 use PipesPhpSdkTests\MockServer\MockServer;
 
@@ -27,6 +28,7 @@ use PipesPhpSdkTests\MockServer\MockServer;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\AmazonApps\S3\Connector
  */
+#[AllowMockObjectsWithoutExpectations]
 final class S3DeleteObjectConnectorTest extends KernelTestCaseAbstract
 {
 

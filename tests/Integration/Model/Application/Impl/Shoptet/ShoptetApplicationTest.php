@@ -20,6 +20,7 @@ use Hanaboso\PipesPhpSdk\Authorization\Provider\OAuth2Provider;
 use Hanaboso\Utils\Date\DateTimeUtils;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
@@ -27,6 +28,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\Shoptet
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(ShoptetApplication::class)]
 final class ShoptetApplicationTest extends KernelTestCaseAbstract
 {

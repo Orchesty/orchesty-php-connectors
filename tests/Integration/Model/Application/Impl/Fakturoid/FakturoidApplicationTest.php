@@ -108,7 +108,7 @@ final class FakturoidApplicationTest extends KernelTestCaseAbstract
         self::assertEquals('https://app.fakturoid.cz/api/v2', $res->getUri(TRUE));
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 

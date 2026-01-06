@@ -18,6 +18,7 @@ use HbPFConnectorsTests\KernelTestCaseAbstract;
 use LogicException;
 use PgSql\Connection;
 use phpmock\phpunit\PHPMock;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
@@ -25,6 +26,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\AmazonApps\Redshift
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(RedshiftApplication::class)]
 final class RedshiftApplicationTest extends KernelTestCaseAbstract
 {

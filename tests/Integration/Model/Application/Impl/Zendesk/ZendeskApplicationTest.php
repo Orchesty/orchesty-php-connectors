@@ -14,6 +14,7 @@ use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationAbstract;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use ReflectionException;
 
@@ -22,6 +23,7 @@ use ReflectionException;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\Zendesk
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(ZendeskApplication::class)]
 final class ZendeskApplicationTest extends KernelTestCaseAbstract
 {

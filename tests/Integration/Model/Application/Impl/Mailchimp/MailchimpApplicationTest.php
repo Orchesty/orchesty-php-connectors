@@ -16,12 +16,14 @@ use Hanaboso\PipesPhpSdk\Authorization\Provider\OAuth2Provider;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
 use HbPFConnectorsTests\MockCurlMethod;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Class MailchimpApplicationTest
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\Mailchimp
  */
+#[AllowMockObjectsWithoutExpectations]
 final class MailchimpApplicationTest extends KernelTestCaseAbstract
 {
 

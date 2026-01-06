@@ -10,6 +10,7 @@ use Hanaboso\PipesPhpSdk\Authorization\Provider\OAuth2Provider;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
@@ -17,6 +18,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\GoogleDrive
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(GoogleDriveApplication::class)]
 final class GoogleDriveApplicationTest extends KernelTestCaseAbstract
 {
@@ -103,7 +105,7 @@ final class GoogleDriveApplicationTest extends KernelTestCaseAbstract
         self::assertFake();
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 

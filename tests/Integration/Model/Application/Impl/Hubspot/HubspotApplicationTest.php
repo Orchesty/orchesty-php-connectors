@@ -15,12 +15,14 @@ use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Authorization\Provider\OAuth2Provider;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Class HubspotApplicationTest
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\Hubspot
  */
+#[AllowMockObjectsWithoutExpectations]
 final class HubspotApplicationTest extends KernelTestCaseAbstract
 {
 

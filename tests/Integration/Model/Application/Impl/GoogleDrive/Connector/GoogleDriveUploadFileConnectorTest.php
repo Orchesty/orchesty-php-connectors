@@ -13,6 +13,7 @@ use Hanaboso\HbPFConnectors\Model\Application\Impl\GoogleDrive\GoogleDriveApplic
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PipesPhpSdkTests\MockServer\Mock;
 use PipesPhpSdkTests\MockServer\MockServer;
@@ -22,6 +23,7 @@ use PipesPhpSdkTests\MockServer\MockServer;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\GoogleDrive\Connector
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(GoogleDriveUploadFileConnector::class)]
 final class GoogleDriveUploadFileConnectorTest extends KernelTestCaseAbstract
 {
@@ -119,7 +121,7 @@ final class GoogleDriveUploadFileConnectorTest extends KernelTestCaseAbstract
             ->processAction($dto);
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 

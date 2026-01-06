@@ -9,12 +9,14 @@ use Hanaboso\HbPFConnectors\Model\Application\Impl\Bigcommerce\BigcommerceApplic
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Class BigcommerceApplicationTest
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\Bigcommerce
  */
+#[AllowMockObjectsWithoutExpectations]
 final class BigcommerceApplicationTest extends KernelTestCaseAbstract
 {
 

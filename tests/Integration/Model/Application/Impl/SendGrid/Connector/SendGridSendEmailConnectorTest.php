@@ -16,6 +16,7 @@ use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PipesPhpSdkTests\MockServer\Mock;
 use PipesPhpSdkTests\MockServer\MockServer;
@@ -25,6 +26,7 @@ use PipesPhpSdkTests\MockServer\MockServer;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\SendGrid\Connector
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(SendGridSendEmailConnector::class)]
 final class SendGridSendEmailConnectorTest extends KernelTestCaseAbstract
 {
@@ -150,7 +152,7 @@ final class SendGridSendEmailConnectorTest extends KernelTestCaseAbstract
             ->processAction(DataProvider::getProcessDto());
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 

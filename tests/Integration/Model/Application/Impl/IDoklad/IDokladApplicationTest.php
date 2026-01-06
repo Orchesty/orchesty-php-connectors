@@ -12,6 +12,7 @@ use Hanaboso\PipesPhpSdk\Authorization\Provider\OAuth2Provider;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
@@ -19,6 +20,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\IDoklad
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(IDokladApplication::class)]
 final class IDokladApplicationTest extends KernelTestCaseAbstract
 {
@@ -106,7 +108,7 @@ final class IDokladApplicationTest extends KernelTestCaseAbstract
         self::assertFake();
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 

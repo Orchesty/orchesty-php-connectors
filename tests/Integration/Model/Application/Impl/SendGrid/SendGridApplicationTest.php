@@ -103,7 +103,7 @@ final class SendGridApplicationTest extends KernelTestCaseAbstract
         }
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 

@@ -10,6 +10,7 @@ use Hanaboso\HbPFConnectors\Model\Application\Impl\Salesforce\SalesforceApplicat
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationAbstract;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
@@ -17,6 +18,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\Salesforce
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(SalesforceApplication::class)]
 final class SalesforceApplicationTest extends KernelTestCaseAbstract
 {

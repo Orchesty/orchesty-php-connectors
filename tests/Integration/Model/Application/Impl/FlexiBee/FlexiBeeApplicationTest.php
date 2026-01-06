@@ -18,6 +18,7 @@ use Hanaboso\Utils\Exception\DateTimeException;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PipesPhpSdkTests\MockServer\Mock;
@@ -28,6 +29,7 @@ use PipesPhpSdkTests\MockServer\MockServer;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\FlexiBee
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(FlexiBeeApplication::class)]
 final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
 {
