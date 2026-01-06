@@ -15,6 +15,7 @@ use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PipesPhpSdkTests\MockServer\Mock;
 use PipesPhpSdkTests\MockServer\MockServer;
 
@@ -23,6 +24,7 @@ use PipesPhpSdkTests\MockServer\MockServer;
  *
  * @package HbPFConnectorsTests\Live\Model\Application\Impl\FlexiBee\Connector
  */
+#[AllowMockObjectsWithoutExpectations]
 final class FlexiBeeGetContactsArrayConnectorTest extends KernelTestCaseAbstract
 {
 

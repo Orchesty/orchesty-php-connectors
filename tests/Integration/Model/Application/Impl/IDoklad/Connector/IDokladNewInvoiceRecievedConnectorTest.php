@@ -16,6 +16,7 @@ use Hanaboso\Utils\File\File;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PipesPhpSdkTests\MockServer\Mock;
 use PipesPhpSdkTests\MockServer\MockServer;
@@ -25,6 +26,7 @@ use PipesPhpSdkTests\MockServer\MockServer;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\IDoklad\Connector
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(IDokladNewInvoiceRecievedConnector::class)]
 final class IDokladNewInvoiceRecievedConnectorTest extends KernelTestCaseAbstract
 {
@@ -151,7 +153,7 @@ final class IDokladNewInvoiceRecievedConnectorTest extends KernelTestCaseAbstrac
         self::assertEquals('1003', $dto->getHeaders()['result-code']);
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 

@@ -16,6 +16,7 @@ use Hanaboso\Utils\File\File;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PipesPhpSdkTests\MockServer\Mock;
 use PipesPhpSdkTests\MockServer\MockServer;
@@ -26,6 +27,7 @@ use Psr\Log\NullLogger;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\Hubspot\Connector
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(HubSpotCreateContactConnector::class)]
 final class HubspotCreateContactConnectorTest extends KernelTestCaseAbstract
 {
@@ -134,7 +136,7 @@ final class HubspotCreateContactConnectorTest extends KernelTestCaseAbstract
             ->processAction($dto);
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 

@@ -239,7 +239,7 @@ final class HubSpotApplication extends OAuth2ApplicationAbstract implements Webh
         return $dto->getStatusCode() === 204;
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 

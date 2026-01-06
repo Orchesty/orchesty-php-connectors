@@ -11,6 +11,7 @@ use Hanaboso\PipesPhpSdk\Connector\Exception\ConnectorException;
 use Hanaboso\Utils\File\File;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\DataProvider;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PipesPhpSdkTests\MockServer\Mock;
 use PipesPhpSdkTests\MockServer\MockServer;
@@ -20,6 +21,7 @@ use PipesPhpSdkTests\MockServer\MockServer;
  *
  * @package HbPFConnectorsTests\Integration\Model\Application\Impl\Fakturoid\Connector
  */
+#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(FakturoidCreateNewSubjectConnector::class)]
 final class FakturoidCreateNewSubjectConnectorTest extends FakturoidAbstractTestConnector
 {
@@ -69,7 +71,7 @@ final class FakturoidCreateNewSubjectConnectorTest extends FakturoidAbstractTest
         self::assertSame($dataFromFile, $res->getData());
     }
 
-    /**
+    /*
      * -------------------------------------------- HELPERS ------------------------------------
      */
 
