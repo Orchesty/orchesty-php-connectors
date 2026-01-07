@@ -8,7 +8,7 @@
         "ext-ctype": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
-        "orchesty/php-sdk": "^3.2 || ^4.0"
+        "orchesty/php-sdk": "^4.0"
     },
     "require-dev": {
         "aws/aws-sdk-php-symfony": "^2.9",
