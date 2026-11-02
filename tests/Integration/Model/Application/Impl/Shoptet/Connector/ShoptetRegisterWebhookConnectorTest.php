@@ -36,6 +36,7 @@ final class ShoptetRegisterWebhookConnectorTest extends KernelTestCaseAbstract
 
     private const array HEADERS = [
         'application' => ShoptetApplication::SHOPTET_KEY,
+        'sdk'         => 'sdk',
         'user'        => self::USER,
     ];
 
@@ -94,7 +95,7 @@ final class ShoptetRegisterWebhookConnectorTest extends KernelTestCaseAbstract
         );
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -125,7 +126,7 @@ final class ShoptetRegisterWebhookConnectorTest extends KernelTestCaseAbstract
         );
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),

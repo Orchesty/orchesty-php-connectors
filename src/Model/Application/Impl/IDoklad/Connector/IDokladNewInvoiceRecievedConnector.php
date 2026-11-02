@@ -84,7 +84,7 @@ final class IDokladNewInvoiceRecievedConnector extends ConnectorAbstract
             $this->evaluateStatusCode($response->getStatusCode(), $dto);
 
             $dto->setData($response->getBody());
-        } catch (CurlException|ConnectorException $e) {
+        } catch (ConnectorException|CurlException $e) {
             throw new OnRepeatException($dto, $e->getMessage(), $e->getCode(), $e);
         } catch (LogicException $e) {
             return $dto->setStopProcess(ProcessDto::DO_NOT_CONTINUE, $e->getMessage());

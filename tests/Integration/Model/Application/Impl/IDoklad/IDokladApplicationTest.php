@@ -81,8 +81,8 @@ final class IDokladApplicationTest extends KernelTestCaseAbstract
     }
 
     /**
-     * @throws CurlException
      * @throws ApplicationInstallException
+     * @throws CurlException
      * @throws Exception
      */
     public function testGetRequestDto(): void

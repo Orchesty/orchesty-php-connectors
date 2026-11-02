@@ -52,7 +52,7 @@ final class FakturoidGetAccountDetailConnectorTest extends FakturoidAbstractTest
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["fakturoid"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["fakturoid"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->getApplication('fakturacnitest')->toArray()])),
@@ -77,7 +77,7 @@ final class FakturoidGetAccountDetailConnectorTest extends FakturoidAbstractTest
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["fakturoid"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["fakturoid"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->getApplication()->toArray()])),

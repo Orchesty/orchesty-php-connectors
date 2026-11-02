@@ -44,7 +44,7 @@ final class AirtableNewRecordConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["airtable"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["airtable"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->createApplication(self::API_KEY)->toArray())),
@@ -71,7 +71,7 @@ final class AirtableNewRecordConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["airtable"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["airtable"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->createApplication(self::API_KEY)->toArray())),
@@ -98,7 +98,7 @@ final class AirtableNewRecordConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["airtable"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["airtable"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->createApplication()->toArray()])),

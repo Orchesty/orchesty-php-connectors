@@ -322,7 +322,11 @@ final class ShoptetApplication extends OAuth2ApplicationAbstract implements Webh
             $this->getAuthUrlWithServerUrl($applicationInstall),
             $this->getTokenUrlWithServerUrl($applicationInstall),
         );
-        $dto->setCustomAppDependencies($applicationInstall->getUser() ?? '', $applicationInstall->getKey() ?? '');
+        $dto->setCustomAppDependencies(
+            $applicationInstall->getUser() ?? '',
+            $applicationInstall->getKey() ?? '',
+            $applicationInstall->getSdk(),
+        );
 
         if ($redirectUrl) {
             $dto->setRedirectUrl($redirectUrl);

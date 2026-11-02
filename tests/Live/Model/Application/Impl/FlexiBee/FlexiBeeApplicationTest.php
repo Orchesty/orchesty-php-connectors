@@ -27,13 +27,13 @@ final class FlexiBeeApplicationTest extends ControllerTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CurlException
      * @throws DateTimeException
-     * @throws GuzzleException
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testAuthorize(): void
     {
         $dto = $this->getApp()->getRequestDto(new ProcessDto(), $this->getAppInstall(), 'GET');
-        self::assertNotEmpty($dto->getHeaders()['Authorization']);
+        self::assertNotSame('', $dto->getHeaders()['Authorization']);
     }
 
     /**

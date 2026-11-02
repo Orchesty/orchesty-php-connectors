@@ -62,7 +62,7 @@ final class IDokladNewInvoiceRecievedConnectorTest extends KernelTestCaseAbstrac
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["i-doklad"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["i-doklad"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(
@@ -91,15 +91,15 @@ final class IDokladNewInvoiceRecievedConnectorTest extends KernelTestCaseAbstrac
 
     /**
      * @return void
-     * @throws OnRepeatException
      * @throws ApplicationInstallException
+     * @throws OnRepeatException
      * @throws PipesFrameworkException
      */
     public function testProcessActionRequestException(): void
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["i-doklad"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["i-doklad"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(

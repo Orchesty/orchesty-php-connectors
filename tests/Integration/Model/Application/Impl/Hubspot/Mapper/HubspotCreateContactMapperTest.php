@@ -61,7 +61,7 @@ final class HubspotCreateContactMapperTest extends KernelTestCaseAbstract
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shipstation"],"users":["3cc4771e-deb7-4905-8e6b-d2**********"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shipstation"],"users":["3cc4771e-deb7-4905-8e6b-d2**********"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -70,7 +70,7 @@ final class HubspotCreateContactMapperTest extends KernelTestCaseAbstract
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shipstation"],"users":["3cc4771e-deb7-4905-8e6b-d2**********"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shipstation"],"users":["3cc4771e-deb7-4905-8e6b-d2**********"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),

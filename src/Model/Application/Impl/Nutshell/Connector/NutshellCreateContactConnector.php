@@ -39,9 +39,9 @@ final class NutshellCreateContactConnector extends ConnectorAbstract
      * @throws ApplicationInstallException
      * @throws ConnectorException
      * @throws CurlException
-     * @throws PipesFrameworkException
-     * @throws GuzzleException
      * @throws CustomNodeException
+     * @throws GuzzleException
+     * @throws PipesFrameworkException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {

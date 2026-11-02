@@ -8,6 +8,7 @@ use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Document\ApplicationInstall;
 use Hanaboso\PipesPhpSdk\Authorization\Provider\OAuth2Provider;
+use Hanaboso\Utils\String\Base64;
 use Hanaboso\Utils\String\Json;
 use HbPFConnectorsTests\ControllerTestCaseAbstract;
 use HbPFConnectorsTests\DataProvider;
@@ -48,7 +49,7 @@ final class IDokladApplicationTest extends ControllerTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["flexibee"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["flexibee"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($applicationInstall->toArray())),
@@ -91,7 +92,7 @@ final class IDokladApplicationTest extends ControllerTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["i-doklad"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["i-doklad"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($applicationInstall->toArray())),
@@ -100,7 +101,10 @@ final class IDokladApplicationTest extends ControllerTestCaseAbstract
 
         $app->setFrontendRedirectUrl($applicationInstall, 'https://127.0.0.11');
 
-        $uri = '/applications/authorize/token?code=b9bd3cdb40745683c7bfc284d747b45a&state=dXNlcjppLWRva2xhZA%2C%2C';
+        $uri = sprintf(
+            '/applications/authorize/token?code=b9bd3cdb40745683c7bfc284d747b45a&state=%s',
+            urlencode(Base64::base64UrlEncode('user:i-doklad:sdk')),
+        );
         $this->client->request('GET', $uri);
         $res = $this->client->getResponse();
 

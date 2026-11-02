@@ -47,8 +47,8 @@ final class GoogleDriveUploadFileConnector extends ConnectorAbstract
      * @param ProcessDto $dto
      *
      * @return ProcessDto
-     * @throws OnRepeatException
      * @throws ApplicationInstallException
+     * @throws OnRepeatException
      * @throws PipesFrameworkException
      */
     public function processAction(ProcessDto $dto): ProcessDto
@@ -86,7 +86,7 @@ final class GoogleDriveUploadFileConnector extends ConnectorAbstract
             $this->evaluateStatusCode($response->getStatusCode(), $dto);
 
             $dto->setData($response->getBody());
-        } catch (CurlException | ConnectorException $e) {
+        } catch (ConnectorException | CurlException $e) {
             throw new OnRepeatException($dto, $e->getMessage(), $e->getCode(), $e);
         } finally {
             unlink($tmpFileName);

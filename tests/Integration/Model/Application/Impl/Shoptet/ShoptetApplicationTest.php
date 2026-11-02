@@ -33,8 +33,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 final class ShoptetApplicationTest extends KernelTestCaseAbstract
 {
 
-    use PrivateTrait;
     use CustomAssertTrait;
+    use PrivateTrait;
 
     private const string CLIENT_ID = '123****';
 
@@ -201,7 +201,7 @@ final class ShoptetApplicationTest extends KernelTestCaseAbstract
     public function testGetWebhookSubscriptions(): void
     {
         $this->setApplication();
-        self::assertNotEmpty($this->application->getWebhookSubscriptions());
+        self::assertCount(1, $this->application->getWebhookSubscriptions());
     }
 
     /**
@@ -356,7 +356,8 @@ final class ShoptetApplicationTest extends KernelTestCaseAbstract
                             'oauth_url'     => 'https://12345.myshoptet.com/action/ApiOAuthServer/getAccessToken',
                         ],
                 ],
-            );
+            )
+            ->setSdk('sdk');
 
         $crateDto = $this->invokeMethod(
             $this->application,
@@ -365,6 +366,10 @@ final class ShoptetApplicationTest extends KernelTestCaseAbstract
         );
 
         self::assertEquals('https://127.0.0.66/api/api/plugins/shoptet', $crateDto->getRedirectUrl());
+        self::assertSame(
+            ['user', 'shoptet', 'sdk'],
+            OAuth2Provider::stateDecode(OAuth2Provider::stateEncode($crateDto)),
+        );
     }
 
     /**

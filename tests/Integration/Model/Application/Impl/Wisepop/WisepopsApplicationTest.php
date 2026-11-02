@@ -103,7 +103,7 @@ final class WisepopsApplicationTest extends KernelTestCaseAbstract
      */
     public function testGetWebhookSubscriptions(): void
     {
-        self::assertNotEmpty($this->application->getWebhookSubscriptions());
+        self::assertCount(1, $this->application->getWebhookSubscriptions());
     }
 
     /**

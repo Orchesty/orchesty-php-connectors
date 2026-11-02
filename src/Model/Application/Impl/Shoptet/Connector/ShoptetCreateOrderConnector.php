@@ -37,9 +37,9 @@ final class ShoptetCreateOrderConnector extends ShoptetConnectorAbstract
      * @return ProcessDto
      * @throws ApplicationInstallException
      * @throws ConnectorException
-     * @throws OnRepeatException
-     * @throws GuzzleException
      * @throws CustomNodeException
+     * @throws GuzzleException
+     * @throws OnRepeatException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {

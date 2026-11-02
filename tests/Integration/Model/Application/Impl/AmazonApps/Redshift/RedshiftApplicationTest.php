@@ -31,8 +31,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 final class RedshiftApplicationTest extends KernelTestCaseAbstract
 {
 
-    use PrivateTrait;
     use PHPMock;
+    use PrivateTrait;
 
     /**
      * @var RedshiftApplication

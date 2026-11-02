@@ -36,6 +36,7 @@ final class ShoptetUpdatedOrderConnectorTest extends KernelTestCaseAbstract
     private const string SENDER = 'sender';
     private const array HEADERS = [
         'application' => ShoptetApplication::SHOPTET_KEY,
+        'sdk'         => 'sdk',
         'user'        => self::USER,
     ];
 
@@ -86,7 +87,7 @@ final class ShoptetUpdatedOrderConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -132,7 +133,7 @@ final class ShoptetUpdatedOrderConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -170,7 +171,7 @@ final class ShoptetUpdatedOrderConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -216,7 +217,7 @@ final class ShoptetUpdatedOrderConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),

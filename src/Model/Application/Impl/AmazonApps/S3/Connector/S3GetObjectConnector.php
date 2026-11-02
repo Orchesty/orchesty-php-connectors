@@ -23,10 +23,10 @@ final class S3GetObjectConnector extends S3ObjectConnectorAbstract
      * @param ProcessDto $dto
      *
      * @return ProcessDto
-     * @throws ConnectorException
-     * @throws OnRepeatException
      * @throws ApplicationInstallException
+     * @throws ConnectorException
      * @throws Exception
+     * @throws OnRepeatException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {

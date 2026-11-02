@@ -62,7 +62,7 @@ final class IDokladCreateNewContactConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["i-doklad"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["i-doklad"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(
@@ -99,7 +99,7 @@ final class IDokladCreateNewContactConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["i-doklad"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["i-doklad"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(
@@ -127,8 +127,8 @@ final class IDokladCreateNewContactConnectorTest extends KernelTestCaseAbstract
 
     /**
      * @return void
-     * @throws OnRepeatException
      * @throws ApplicationInstallException
+     * @throws OnRepeatException
      * @throws PipesFrameworkException
      */
     public function testProcessActionRequestLogicException(): void

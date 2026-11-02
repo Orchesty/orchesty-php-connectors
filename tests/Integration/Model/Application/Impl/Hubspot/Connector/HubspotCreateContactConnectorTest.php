@@ -60,7 +60,7 @@ final class HubspotCreateContactConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["hub-spot"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["hub-spot"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->createApplicationInstall()->toArray()])),
@@ -86,7 +86,7 @@ final class HubspotCreateContactConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["hub-spot"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["hub-spot"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->createApplicationInstall()->toArray()])),
@@ -116,7 +116,7 @@ final class HubspotCreateContactConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["hub-spot"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["hub-spot"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->createApplicationInstall()->toArray()])),

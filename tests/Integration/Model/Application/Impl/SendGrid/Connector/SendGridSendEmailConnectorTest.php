@@ -59,7 +59,7 @@ final class SendGridSendEmailConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["send-grid"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["send-grid"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->createApplicationInstall()->toArray()])),
@@ -85,7 +85,7 @@ final class SendGridSendEmailConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["send-grid"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["send-grid"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->createApplicationInstall()->toArray()])),
@@ -110,7 +110,7 @@ final class SendGridSendEmailConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["send-grid"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["send-grid"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->createApplicationInstall()->toArray()])),
@@ -137,7 +137,7 @@ final class SendGridSendEmailConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["send-grid"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["send-grid"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], '[]'),

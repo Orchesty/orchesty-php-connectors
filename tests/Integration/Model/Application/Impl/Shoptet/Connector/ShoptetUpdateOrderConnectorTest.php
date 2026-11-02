@@ -46,6 +46,7 @@ final class ShoptetUpdateOrderConnectorTest extends KernelTestCaseAbstract
     private const array HEADERS = [
         'application'     => ShoptetApplication::SHOPTET_KEY,
         'internal-id'     => '1',
+        'sdk'             => 'sdk',
         'user'            => self::USER,
         self::EXTERNAL_ID => '1',
         self::TYPE        => 'cancelled',
@@ -113,7 +114,7 @@ final class ShoptetUpdateOrderConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -148,7 +149,7 @@ final class ShoptetUpdateOrderConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -179,7 +180,7 @@ final class ShoptetUpdateOrderConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], '[]'),
@@ -230,7 +231,7 @@ final class ShoptetUpdateOrderConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -253,11 +254,11 @@ final class ShoptetUpdateOrderConnectorTest extends KernelTestCaseAbstract
      * @return void
      * @throws ApplicationInstallException
      * @throws ConnectorException
+     * @throws CustomNodeException
+     * @throws Exception
      * @throws GuzzleException
      * @throws OnRepeatException
-     * @throws CustomNodeException
      * @throws PipesFrameworkException
-     * @throws Exception
      */
     public function testProcessActionMissingResponse(): void
     {
@@ -286,7 +287,7 @@ final class ShoptetUpdateOrderConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -340,7 +341,7 @@ final class ShoptetUpdateOrderConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),

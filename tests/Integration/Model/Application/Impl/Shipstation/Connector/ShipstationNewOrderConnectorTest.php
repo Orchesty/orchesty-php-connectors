@@ -59,7 +59,7 @@ final class ShipstationNewOrderConnectorTest extends KernelTestCaseAbstract
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shipstation"],"users":["79620d3760d**********18f8a35dec8"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shipstation"],"users":["79620d3760d**********18f8a35dec8"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
@@ -68,7 +68,7 @@ final class ShipstationNewOrderConnectorTest extends KernelTestCaseAbstract
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shipstation"],"users":["79620d3760d**********18f8a35dec8"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shipstation"],"users":["79620d3760d**********18f8a35dec8"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),

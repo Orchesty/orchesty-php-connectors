@@ -8,6 +8,7 @@ use Hanaboso\CommonsBundle\Process\ProcessDto;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlException;
 use Hanaboso\CommonsBundle\Transport\Curl\CurlManager;
 use Hanaboso\CommonsBundle\Transport\Curl\Dto\ResponseDto;
+use Hanaboso\CommonsBundle\Transport\CurlManagerInterface;
 use Hanaboso\HbPFConnectors\Model\Application\Impl\Nutshell\Connector\NutshellCreateContactConnector;
 use Hanaboso\PhpCheckUtils\PhpUnit\Traits\PrivateTrait;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
@@ -53,11 +54,11 @@ final class NutshellCreateContactConnectorTest extends KernelTestCaseAbstract
     }
 
     /**
-     * @throws ReflectionException
-     * @throws CurlException
      * @throws ApplicationInstallException
-     * @throws PipesFrameworkException
+     * @throws CurlException
      * @throws Exception
+     * @throws PipesFrameworkException
+     * @throws ReflectionException
      */
     public function testProcessAction(): void
     {
@@ -65,7 +66,7 @@ final class NutshellCreateContactConnectorTest extends KernelTestCaseAbstract
         $this->mockSender($data);
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["nutshell"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["nutshell"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(
@@ -79,6 +80,7 @@ final class NutshellCreateContactConnectorTest extends KernelTestCaseAbstract
         $dto    = (new ProcessDto())->setData($data)->setHeaders(
             [
                 'application' => 'nutshell',
+                'sdk'         => 'sdk',
                 'user'        => 'user',
             ],
         );
@@ -105,8 +107,8 @@ final class NutshellCreateContactConnectorTest extends KernelTestCaseAbstract
      */
     private function mockSender(string $data): void
     {
-        $sender = self::createPartialMock(CurlManager::class, ['send']);
-        $sender->expects(self::any())->method('send')->willReturn(
+        $sender = self::createStub(CurlManagerInterface::class);
+        $sender->method('send')->willReturn(
             new ResponseDto(200, 'success', $data, []),
         );
         $this->setProperty($this->connector, 'sender', $sender);

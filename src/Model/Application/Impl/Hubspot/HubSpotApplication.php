@@ -158,8 +158,8 @@ final class HubSpotApplication extends OAuth2ApplicationAbstract implements Webh
      * @param string              $url
      *
      * @return RequestDto
-     * @throws CurlException
      * @throws ApplicationInstallException
+     * @throws CurlException
      */
     public function getWebhookSubscribeRequestDto(
         ApplicationInstall $applicationInstall,
