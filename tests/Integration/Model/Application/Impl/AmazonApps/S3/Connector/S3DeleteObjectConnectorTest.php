@@ -54,7 +54,7 @@ final class S3DeleteObjectConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["s3"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["s3"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->createApplication()->toArray())),
@@ -63,7 +63,7 @@ final class S3DeleteObjectConnectorTest extends KernelTestCaseAbstract
 
         $dto = (new ProcessDto())
             ->setData(Json::encode(['name' => 'Test']))
-            ->setHeaders(['application' => self::KEY, 'user' => self::USER]);
+            ->setHeaders(['application' => self::KEY, 'sdk' => 'sdk', 'user' => self::USER]);
         $dto = $this->connector->processAction($dto);
 
         self::assertEquals('Test', Json::decode($dto->getData())['name']);
@@ -82,7 +82,7 @@ final class S3DeleteObjectConnectorTest extends KernelTestCaseAbstract
 
         $this->createApplication();
 
-        $dto = (new ProcessDto())->setHeaders(['application' => self::KEY, 'user' => self::USER]);
+        $dto = (new ProcessDto())->setHeaders(['application' => self::KEY, 'sdk' => 'sdk', 'user' => self::USER]);
 
         $this->connector->processAction($dto);
     }
@@ -100,7 +100,7 @@ final class S3DeleteObjectConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["s3"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["s3"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->createApplication()->toArray())),
@@ -120,7 +120,7 @@ final class S3DeleteObjectConnectorTest extends KernelTestCaseAbstract
 
         $dto = (new ProcessDto())
             ->setData(Json::encode(['name' => 'Test', 'content' => 'Content']))
-            ->setHeaders(['application' => self::KEY, 'user' => self::USER]);
+            ->setHeaders(['application' => self::KEY, 'sdk' => 'sdk', 'user' => self::USER]);
 
         $this->connector->processAction($dto);
     }
@@ -137,7 +137,7 @@ final class S3DeleteObjectConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["s3"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["s3"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->createApplication()->toArray()])),
@@ -148,7 +148,7 @@ final class S3DeleteObjectConnectorTest extends KernelTestCaseAbstract
 
         $dto = (new ProcessDto())
             ->setData(Json::encode(['name' => 'Test', 'content' => 'Content']))
-            ->setHeaders(['application' => self::KEY, 'user' => self::USER]);
+            ->setHeaders(['application' => self::KEY, 'sdk' => 'sdk', 'user' => self::USER]);
 
         self::getContainer()
             ->get('hbpf.connector.s3-create-object')

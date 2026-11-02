@@ -72,8 +72,8 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CurlException
      * @throws DateTimeException
-     * @throws GuzzleException
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testGetRequestDto(): void
     {
@@ -103,7 +103,7 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
             $this->getAppInstall(),
             CurlManager::METHOD_POST,
             '',
-            json::encode(['foo' => 'bar']),
+            Json::encode(['foo' => 'bar']),
         );
 
         self::assertSame(CurlManager::METHOD_POST, $dto->getMethod());
@@ -115,8 +115,8 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CurlException
      * @throws DateTimeException
-     * @throws GuzzleException
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testGetRequestDtoWithHttpAuth(): void
     {
@@ -126,7 +126,7 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
             $this->getAppInstall(TRUE),
             CurlManager::METHOD_POST,
             NULL,
-            json::encode(['foo' => 'bar']),
+            Json::encode(['foo' => 'bar']),
         );
 
         self::assertSame(CurlManager::METHOD_POST, $dto->getMethod());
@@ -138,8 +138,8 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CurlException
      * @throws DateTimeException
-     * @throws GuzzleException
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testGetRequestDtoWithoutUrl(): void
     {
@@ -153,7 +153,7 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
             $this->getAppInstall(FALSE, FALSE),
             CurlManager::METHOD_POST,
             NULL,
-            json::encode(['foo' => 'bar']),
+            Json::encode(['foo' => 'bar']),
         );
     }
 
@@ -162,8 +162,8 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CurlException
      * @throws DateTimeException
-     * @throws GuzzleException
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testGetRequestDtoWithoutUser(): void
     {
@@ -177,7 +177,7 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
             $this->getAppInstall(FALSE, FALSE, FALSE),
             CurlManager::METHOD_POST,
             NULL,
-            json::encode(['foo' => 'bar']),
+            Json::encode(['foo' => 'bar']),
         );
     }
 
@@ -186,8 +186,8 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CurlException
      * @throws DateTimeException
-     * @throws GuzzleException
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testGetRequestDtoWithoutPassword(): void
     {
@@ -201,7 +201,7 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
             $this->getAppInstall(FALSE, FALSE, TRUE, FALSE),
             CurlManager::METHOD_POST,
             NULL,
-            json::encode(['foo' => 'bar']),
+            Json::encode(['foo' => 'bar']),
         );
     }
 
@@ -210,8 +210,8 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CurlException
      * @throws DateTimeException
-     * @throws GuzzleException
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testGetRequestDtoWithoutTokenParameter(): void
     {
@@ -221,7 +221,7 @@ final class FlexiBeeApplicationTest extends KernelTestCaseAbstract
             $this->getAppInstall(FALSE, TRUE, TRUE, TRUE, TRUE),
             CurlManager::METHOD_POST,
             NULL,
-            json::encode(['foo' => 'bar']),
+            Json::encode(['foo' => 'bar']),
         );
 
         self::assertSame(CurlManager::METHOD_POST, $dto->getMethod());

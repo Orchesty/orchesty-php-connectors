@@ -1,8 +1,8 @@
 .PHONY: test docker-down-clean 
 
-DC=docker-compose
-DE=docker-compose exec -T app
-DEC=docker-compose exec -T app composer
+DC=docker compose
+DE=docker compose exec -T app
+DEC=docker compose exec -T app composer
 
 .env:
 	sed -e "s/{DEV_UID}/$(shell if [ "$(shell uname)" = "Linux" ]; then echo $(shell id -u); else echo '1001'; fi)/g" \

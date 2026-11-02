@@ -54,7 +54,7 @@ final class FakturoidCreateNewInvoiceConnectorTest extends KernelTestCaseAbstrac
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["fakturoid"],"users":["ha****@mailinator.com"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["fakturoid"],"users":["ha****@mailinator.com"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($applicationInstall->toArray())),

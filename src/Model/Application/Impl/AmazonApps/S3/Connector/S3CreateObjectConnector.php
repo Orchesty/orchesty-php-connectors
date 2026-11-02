@@ -28,9 +28,9 @@ final class S3CreateObjectConnector extends S3ObjectConnectorAbstract
      * @throws ApplicationInstallException
      * @throws ConnectorException
      * @throws CustomNodeException
+     * @throws Exception
      * @throws GuzzleException
      * @throws OnRepeatException
-     * @throws Exception
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {

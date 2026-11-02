@@ -36,7 +36,7 @@ final class S3GetObjectConnectorTest extends KernelTestCaseAbstract
 
     private const string KEY    = 's3';
     private const string USER   = 'user';
-    private const array HEADERS = ['application' => self::KEY, 'user' => self::USER];
+    private const array HEADERS = ['application' => self::KEY, 'sdk' => 'sdk', 'user' => self::USER];
 
     /**
      * @var S3GetObjectConnector
@@ -55,7 +55,7 @@ final class S3GetObjectConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["i-doklad"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["i-doklad"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->createApplication()->toArray())),
@@ -63,7 +63,7 @@ final class S3GetObjectConnectorTest extends KernelTestCaseAbstract
         );
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["s3"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["s3"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->createApplication()->toArray())),
@@ -128,7 +128,7 @@ final class S3GetObjectConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["s3"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["s3"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->createApplication()->toArray())),
@@ -142,7 +142,7 @@ final class S3GetObjectConnectorTest extends KernelTestCaseAbstract
         self::expectException(OnRepeatException::class);
         self::expectExceptionCode(0);
         self::expectExceptionMessage(
-            "Connector 's3-get-object': Aws\S3\Exception\S3Exception: Error executing \"GetObject\" on \"http://fakes3:4567/Bucket/Unknown\"; AWS HTTP error: Client error: `GET http://fakes3:4567/Bucket/Unknown` resulted in a `404 Not Found`",
+            "Connector 's3-get-object': Aws\S3\Exception\S3Exception: Error executing \"GetObject\" on \"http://fakes3:4567/Bucket/Unknown\"; AWS HTTP error:\nNoSuchKey (client): The specified key does not exist",
         );
 
         $this->connector->processAction($dto);
@@ -160,7 +160,7 @@ final class S3GetObjectConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["s3"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["s3"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->createApplication()->toArray())),

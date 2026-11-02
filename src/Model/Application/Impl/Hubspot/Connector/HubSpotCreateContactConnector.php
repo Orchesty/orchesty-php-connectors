@@ -76,7 +76,7 @@ final class HubSpotCreateContactConnector extends ConnectorAbstract implements L
             }
 
             $dto->setData($response->getBody());
-        } catch (CurlException | ConnectorException $e) {
+        } catch (ConnectorException | CurlException $e) {
             throw new OnRepeatException($dto, $e->getMessage(), $e->getCode(), $e);
         }
 

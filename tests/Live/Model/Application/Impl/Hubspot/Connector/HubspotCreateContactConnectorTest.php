@@ -37,7 +37,7 @@ final class HubspotCreateContactConnectorTest extends KernelTestCaseAbstract
         $app = self::getContainer()->get('hbpf.application.hub-spot');
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["hub-spot"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["hub-spot"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode(

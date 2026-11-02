@@ -28,7 +28,7 @@ final class RedshiftExecuteQueryConnectorTest extends KernelTestCaseAbstract
 
     private const KEY       = 'redshift';
     private const USER      = 'user';
-    private const HEADERS   = ['application' => self::KEY, 'user' => self::USER];
+    private const HEADERS   = ['application' => self::KEY, 'sdk' => 'sdk', 'user' => self::USER];
     private const NAMESPACE = 'Hanaboso\HbPFConnectors\Model\Application\Impl\AmazonApps\Redshift\Connector';
 
     /**

@@ -43,8 +43,8 @@ abstract class FakturoidAbstractConnector extends ConnectorAbstract
      * @throws ConnectorException
      * @throws CurlException
      * @throws CustomNodeException
-     * @throws PipesFrameworkException
      * @throws GuzzleException
+     * @throws PipesFrameworkException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {

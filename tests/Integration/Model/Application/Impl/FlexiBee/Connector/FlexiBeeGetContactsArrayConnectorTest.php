@@ -56,10 +56,10 @@ final class FlexiBeeGetContactsArrayConnectorTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CustomNodeException
      * @throws DateTimeException
+     * @throws Exception
      * @throws GuzzleException
      * @throws OnRepeatException
      * @throws PipesFrameworkException
-     * @throws Exception
      */
     public function testProcessAction(): void
     {
@@ -68,7 +68,7 @@ final class FlexiBeeGetContactsArrayConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["flexibee"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["flexibee"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->getAppInstall()->toArray())),
@@ -94,11 +94,11 @@ final class FlexiBeeGetContactsArrayConnectorTest extends KernelTestCaseAbstract
 
     /**
      * @return void
-     * @throws GuzzleException
-     * @throws OnRepeatException
      * @throws ApplicationInstallException
      * @throws CustomNodeException
      * @throws DateTimeException
+     * @throws GuzzleException
+     * @throws OnRepeatException
      * @throws PipesFrameworkException
      */
     public function testProcessActionRequestException(): void
@@ -108,7 +108,7 @@ final class FlexiBeeGetContactsArrayConnectorTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["flexibee"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["flexibee"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($this->getAppInstall()->toArray())),

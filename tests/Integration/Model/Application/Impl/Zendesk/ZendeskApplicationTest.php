@@ -12,6 +12,7 @@ use Hanaboso\PhpCheckUtils\PhpUnit\Traits\PrivateTrait;
 use Hanaboso\PipesPhpSdk\Application\Base\ApplicationInterface;
 use Hanaboso\PipesPhpSdk\Application\Exception\ApplicationInstallException;
 use Hanaboso\PipesPhpSdk\Authorization\Base\OAuth2\OAuth2ApplicationAbstract;
+use Hanaboso\PipesPhpSdk\Authorization\Provider\OAuth2Provider;
 use HbPFConnectorsTests\DataProvider;
 use HbPFConnectorsTests\KernelTestCaseAbstract;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -105,8 +106,8 @@ final class ZendeskApplicationTest extends KernelTestCaseAbstract
     }
 
     /**
-     * @throws CurlException
      * @throws ApplicationInstallException
+     * @throws CurlException
      * @throws Exception
      */
     public function testGetRequestDto(): void
@@ -199,14 +200,15 @@ final class ZendeskApplicationTest extends KernelTestCaseAbstract
     }
 
     /**
-     * @throws ReflectionException
      * @throws Exception
+     * @throws ReflectionException
      */
     public function testCreateDto(): void
     {
         $this->setApplication();
         $applicationInstall = DataProvider::getOauth2AppInstall($this->application->getName())
-            ->addSettings([ApplicationInterface::AUTHORIZATION_FORM => ['subdomain' => 'domain123']]);
+            ->addSettings([ApplicationInterface::AUTHORIZATION_FORM => ['subdomain' => 'domain123']])
+            ->setSdk('sdk');
 
         $crateDto = $this->invokeMethod(
             $this->application,
@@ -215,6 +217,10 @@ final class ZendeskApplicationTest extends KernelTestCaseAbstract
         );
 
         self::assertEquals('https://127.0.0.66/api/applications/authorize/token', $crateDto->getRedirectUrl());
+        self::assertSame(
+            ['user', 'zendesk', 'sdk'],
+            OAuth2Provider::stateDecode(OAuth2Provider::stateEncode($crateDto)),
+        );
     }
 
     /**

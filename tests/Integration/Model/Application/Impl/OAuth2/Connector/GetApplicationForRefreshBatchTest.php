@@ -35,7 +35,7 @@ final class GetApplicationForRefreshBatchTest extends KernelTestCaseAbstract
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"expires":1677137981}',
+                '/document/ApplicationInstall?filter={"enabled":null,"expires":1677137981}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(

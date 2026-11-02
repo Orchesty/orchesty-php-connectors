@@ -51,10 +51,10 @@ final class FlexiBeeCreateNewContactConnectorTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CustomNodeException
      * @throws DateTimeException
+     * @throws Exception
      * @throws GuzzleException
      * @throws OnRepeatException
      * @throws PipesFrameworkException
-     * @throws Exception
      */
     public function testProcessAction(): void
     {
@@ -63,7 +63,7 @@ final class FlexiBeeCreateNewContactConnectorTest extends KernelTestCaseAbstract
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["flexibee"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["flexibee"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->getAppInstall()->toArray()])),
@@ -91,10 +91,10 @@ final class FlexiBeeCreateNewContactConnectorTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CustomNodeException
      * @throws DateTimeException
+     * @throws Exception
      * @throws GuzzleException
      * @throws OnRepeatException
      * @throws PipesFrameworkException
-     * @throws Exception
      */
     public function testProcessActionCurlException(): void
     {
@@ -103,7 +103,7 @@ final class FlexiBeeCreateNewContactConnectorTest extends KernelTestCaseAbstract
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["flexibee"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["flexibee"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->getAppInstall()->toArray()])),
@@ -177,10 +177,10 @@ final class FlexiBeeCreateNewContactConnectorTest extends KernelTestCaseAbstract
      * @throws ApplicationInstallException
      * @throws CustomNodeException
      * @throws DateTimeException
+     * @throws Exception
      * @throws GuzzleException
      * @throws OnRepeatException
      * @throws PipesFrameworkException
-     * @throws Exception
      */
     private function testProcessActionException(string $body = '{}'): void
     {

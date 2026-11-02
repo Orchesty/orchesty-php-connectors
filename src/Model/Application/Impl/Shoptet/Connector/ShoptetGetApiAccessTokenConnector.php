@@ -35,8 +35,8 @@ final class ShoptetGetApiAccessTokenConnector extends ShoptetConnectorAbstract
      * @return ProcessDto
      * @throws ApplicationInstallException
      * @throws CurlException
-     * @throws GuzzleException
      * @throws CustomNodeException
+     * @throws GuzzleException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {
@@ -52,8 +52,8 @@ final class ShoptetGetApiAccessTokenConnector extends ShoptetConnectorAbstract
      *
      * @return mixed[]
      * @throws ApplicationInstallException
-     * @throws CurlException
      * @throws ConnectorException
+     * @throws CurlException
      */
     public function processActionArray(ApplicationInstall $applicationInstall, ProcessDto $processDto): array
     {

@@ -39,6 +39,7 @@ final class ShoptetGetEshopInfoTest extends KernelTestCaseAbstract
 
     private const array HEADERS = [
         'application' => ShoptetApplication::SHOPTET_KEY,
+        'sdk'         => 'sdk',
         'user'        => 'user',
     ];
 
@@ -62,12 +63,12 @@ final class ShoptetGetEshopInfoTest extends KernelTestCaseAbstract
 
     /**
      * @return void
-     * @throws GuzzleException
-     * @throws OnRepeatException
      * @throws ApplicationInstallException
      * @throws ConnectorException
      * @throws CustomNodeException
      * @throws Exception
+     * @throws GuzzleException
+     * @throws OnRepeatException
      */
     public function testProcessAction(): void
     {
@@ -76,7 +77,7 @@ final class ShoptetGetEshopInfoTest extends KernelTestCaseAbstract
 
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->insertApplicationInstall()->toArray()])),
@@ -99,7 +100,7 @@ final class ShoptetGetEshopInfoTest extends KernelTestCaseAbstract
         $applicationInstall = $this->insertApplicationInstall();
         $data               = $this->connector->processActionArray($applicationInstall, new ProcessDto());
 
-        self::assertNotEmpty($data);
+        self::assertSame(Json::decode($jsonContent), $data);
     }
 
     /**
@@ -110,7 +111,7 @@ final class ShoptetGetEshopInfoTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["shoptet"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["shoptet"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$this->insertApplicationInstall()->toArray()])),

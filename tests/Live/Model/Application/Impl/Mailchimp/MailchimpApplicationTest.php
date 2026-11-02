@@ -53,7 +53,7 @@ final class MailchimpApplicationTest extends KernelTestCaseAbstract
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["flexibee"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["flexibee"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode($applicationInstall->toArray())),

@@ -56,7 +56,7 @@ final class GoogleDriveUploadFileConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["google-drive"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["google-drive"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(
@@ -93,7 +93,7 @@ final class GoogleDriveUploadFileConnectorTest extends KernelTestCaseAbstract
     {
         $this->mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["google-drive"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["google-drive"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(

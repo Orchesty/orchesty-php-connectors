@@ -82,10 +82,16 @@ final class DataProvider
      * @param string $key
      * @param string $user
      * @param string $body
+     * @param string $sdk
      *
      * @return ProcessDto
      */
-    public static function getProcessDto(string $key = '', string $user = 'user', string $body = '{}'): ProcessDto
+    public static function getProcessDto(
+        string $key = '',
+        string $user = 'user',
+        string $body = '{}',
+        string $sdk = 'sdk',
+    ): ProcessDto
     {
         $dto = new ProcessDto();
         $dto
@@ -93,6 +99,7 @@ final class DataProvider
             ->setHeaders(
                 [
                     PipesHeaders::APPLICATION => $key,
+                    PipesHeaders::SDK         => $sdk,
                     PipesHeaders::USER        => $user,
                 ],
             );

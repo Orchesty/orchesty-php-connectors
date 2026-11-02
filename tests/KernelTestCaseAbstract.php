@@ -15,6 +15,7 @@ use Hanaboso\PhpCheckUtils\PhpUnit\Traits\CustomAssertTrait;
 use Hanaboso\PhpCheckUtils\PhpUnit\Traits\RestoreErrorHandlersTrait;
 use Hanaboso\Utils\File\File;
 use Hanaboso\Utils\String\Json;
+use Hanaboso\Utils\System\PipesHeaders;
 use PHPUnit\Framework\MockObject\Stub\ReturnCallback;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Throwable;
@@ -235,7 +236,9 @@ abstract class KernelTestCaseAbstract extends KernelTestCase
      */
     protected function prepareProcessDto(array|string $data = [], array $headers = []): ProcessDto
     {
-        return (new ProcessDto())->setData(is_array($data) ? Json::encode($data) : $data)->setHeaders($headers);
+        return (new ProcessDto())
+            ->setData(is_array($data) ? Json::encode($data) : $data)
+            ->setHeaders([PipesHeaders::SDK => 'sdk', ...$headers]);
     }
 
     /**

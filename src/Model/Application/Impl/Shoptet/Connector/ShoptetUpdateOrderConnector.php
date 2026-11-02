@@ -41,10 +41,10 @@ final class ShoptetUpdateOrderConnector extends ShoptetConnectorAbstract
      * @return ProcessDto
      * @throws ApplicationInstallException
      * @throws ConnectorException
+     * @throws CustomNodeException
+     * @throws GuzzleException
      * @throws OnRepeatException
      * @throws PipesFrameworkException
-     * @throws GuzzleException
-     * @throws CustomNodeException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {

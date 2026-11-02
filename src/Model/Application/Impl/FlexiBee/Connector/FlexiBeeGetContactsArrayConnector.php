@@ -38,11 +38,11 @@ final class FlexiBeeGetContactsArrayConnector extends ConnectorAbstract
      *
      * @return ProcessDto
      * @throws ApplicationInstallException
+     * @throws CustomNodeException
      * @throws DateTimeException
+     * @throws GuzzleException
      * @throws OnRepeatException
      * @throws PipesFrameworkException
-     * @throws GuzzleException
-     * @throws CustomNodeException
      */
     public function processAction(ProcessDto $dto): ProcessDto
     {
@@ -64,7 +64,7 @@ final class FlexiBeeGetContactsArrayConnector extends ConnectorAbstract
             $this->evaluateStatusCode($response->getStatusCode(), $dto);
 
             $dto->setData($response->getBody());
-        } catch (CurlException | ConnectorException $e) {
+        } catch (ConnectorException | CurlException $e) {
             throw new OnRepeatException($dto, $e->getMessage(), $e->getCode(), $e);
         }
 

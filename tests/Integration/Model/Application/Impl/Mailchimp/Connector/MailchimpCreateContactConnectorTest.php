@@ -78,7 +78,7 @@ final class MailchimpCreateContactConnectorTest extends KernelTestCaseAbstract
 
         $mockServer->addMock(
             new Mock(
-                '/document/ApplicationInstall?filter={"names":["mailchimp"],"users":["user"]}',
+                '/document/ApplicationInstall?filter={"enabled":null,"names":["mailchimp"],"users":["user"],"sdks":["sdk"]}',
                 NULL,
                 CurlManager::METHOD_GET,
                 new Response(200, [], Json::encode([$applicationInstall->toArray()])),
